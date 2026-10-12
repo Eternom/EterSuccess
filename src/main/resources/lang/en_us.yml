@@ -46,6 +46,8 @@ category:
   legendes: "<primary>Legends"
   metiers: "<primary>Jobs"
   defis: "<primary>Challenges and pass"
+  commerce: "<primary>Trade"
+  clans: "<primary>Clans"
   richesse: "<primary>Wealth"
   aventure: "<primary>Adventure"
 
@@ -95,6 +97,11 @@ subject:
   resource: "Explorer"
   enchant: "Enchanter"
   deaths: "Dying happens"
+  sales: "Seller"
+  purchases: "Buyer"
+  clan-land: "Clan builder"
+  daily-series: "Loyal"
+  homes: "Homeowner"
 
 kind:
   break: "<info><subject>: break <accent><target></accent> (natural)"
@@ -114,3 +121,12 @@ kind:
   clan: "<info>Join or create a clan"
   pass_tier: "<info>Reach tier <accent><target></accent> of the pass"
   daily: "<info>Claim the daily reward"
+  sell: "<info><subject>: sell <accent><target></accent> items at the auction house"
+  buy: "<info><subject>: buy <accent><target></accent> items at the auction house"
+  daily_series: "<info><subject>: finish <accent><target></accent> 7-day streaks (/daily)"
+  clan_land: "<info><subject>: a clan of <accent><target></accent> chunks"
+
+# Sidebar line (EterTab, <tag_success>): the First steps step until done, then the points
+sidebar:
+  step: "  <info>First steps <accent><step></accent><info>/<steps>"
+  points: "  <info>Achievements <accent><points></accent> <info>pts"

@@ -47,6 +47,8 @@ category:
   legendes: "<primary>Légendes"
   metiers: "<primary>Métiers"
   defis: "<primary>Défis et pass"
+  commerce: "<primary>Commerce"
+  clans: "<primary>Clans"
   richesse: "<primary>Richesse"
   aventure: "<primary>Aventure"
 
@@ -98,6 +100,11 @@ subject:
   resource: "Explorateur"
   enchant: "Enchanteur"
   deaths: "Mourir, ça arrive"
+  sales: "Vendeur"
+  purchases: "Acheteur"
+  clan-land: "Bâtisseur de clan"
+  daily-series: "Fidèle"
+  homes: "Propriétaire"
 
 # Description d'un niveau selon ce qu'il compte (<target> = le nombre, <subject> = le nom)
 kind:
@@ -118,3 +125,12 @@ kind:
   clan: "<info>Rejoindre ou créer un clan"
   pass_tier: "<info>Atteindre le palier <accent><target></accent> du pass"
   daily: "<info>Réclamer la récompense du jour"
+  sell: "<info><subject> : vendre <accent><target></accent> objets à l'hôtel des ventes"
+  buy: "<info><subject> : acheter <accent><target></accent> objets à l'hôtel des ventes"
+  daily_series: "<info><subject> : finir <accent><target></accent> séries de 7 jours (/daily)"
+  clan_land: "<info><subject> : un clan de <accent><target></accent> chunks"
+
+# Ligne de la sidebar (EterTab, <tag_success>) : l'étape des Premiers pas tant qu'ils ne sont pas finis, puis les points
+sidebar:
+  step: "  <info>Premiers pas <accent><step></accent><info>/<steps>"
+  points: "  <info>Succès <accent><points></accent> <info>pts"

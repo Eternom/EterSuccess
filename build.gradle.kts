@@ -24,16 +24,16 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.2.build.129-stable")
 
     // Socle commun : base, langues, menus (plugin EterLib installé sur le serveur)
-    compileOnly("com.github.Eternom:EterLib:1.12.0")
+    compileOnly("com.github.Eternom:EterLib:1.13.0")
     // Argent : l'API d'EterEconomy (chaque mouvement avec sa source)
     compileOnly("com.github.Eternom:EterEconomy:2.2.2")
     // Ce que les succès lisent ou écoutent chez les autres (softdepend, chacun dans une classe à part) :
     // quêtes de métier, défis et pass, monde ressource, homes, clan
-    compileOnly("com.github.Eternom:EterMarket:1.5.0")
-    compileOnly("com.github.Eternom:EterReward:1.3.0")
+    compileOnly("com.github.Eternom:EterMarket:1.7.0")
+    compileOnly("com.github.Eternom:EterReward:1.5.0")
     compileOnly("com.github.Eternom:EterResource:1.1.0")
     compileOnly("com.github.Eternom:EterHome:1.2.1")
-    compileOnly("com.github.Eternom:EterClan:1.1.0")
+    compileOnly("com.github.Eternom:EterClan:1.2.0")
 }
 
 java {

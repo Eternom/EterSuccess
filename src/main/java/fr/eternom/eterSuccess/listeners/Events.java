@@ -13,9 +13,11 @@ public class Events {
         // Événements des autres plugins : seulement s'ils sont là (leurs classes n'existent pas sinon)
         if (plugins.isPluginEnabled("EterMarket")) {
             plugins.registerEvents(new NetworkListeners.Quests(main.getSuccess()), main);
+            plugins.registerEvents(new NetworkListeners.Auctions(main.getSuccess()), main);
         }
         if (plugins.isPluginEnabled("EterReward")) {
             plugins.registerEvents(new NetworkListeners.Challenges(main.getSuccess()), main);
+            plugins.registerEvents(new NetworkListeners.Daily(main.getSuccess()), main);
         }
     }
 }

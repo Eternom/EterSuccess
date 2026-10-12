@@ -30,6 +30,39 @@ public final class NetworkListeners {
         }
     }
 
+    /** Ventes de l'hôtel des ventes (EterMarket) : une vente pour le vendeur (même hors ligne), un achat pour l'acheteur. */
+    public static class Auctions implements Listener {
+
+        private final SuccessService success;
+
+        public Auctions(SuccessService success) {
+            this.success = success;
+        }
+
+        @EventHandler
+        public void onSale(fr.eternom.eterMarket.api.AuctionSaleEvent event) {
+            success.countUuid(event.getSeller(), Kind.SELL, 1);
+            success.countUuid(event.getBuyer(), Kind.BUY, 1);
+        }
+    }
+
+    /** Récompense du jour (EterReward) : une série complète (jour 7). */
+    public static class Daily implements Listener {
+
+        private final SuccessService success;
+
+        public Daily(SuccessService success) {
+            this.success = success;
+        }
+
+        @EventHandler
+        public void onDaily(fr.eternom.eterReward.api.DailyClaimEvent event) {
+            if (event.getDay() >= 7) {
+                success.countUuid(event.getPlayer().getUniqueId(), Kind.DAILY_SERIES, 1);
+            }
+        }
+    }
+
     /** Défis (EterReward) : tag = daily ou weekly. */
     public static class Challenges implements Listener {
 

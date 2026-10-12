@@ -26,6 +26,7 @@ final class States {
             case HOMES -> enabled("EterHome") ? Homes.count(player) : -1;
             case MONEY -> EconomyApi.get().map(economy -> (long) Math.floor(economy.balance(player))).orElse(-1L);
             case CLAN -> enabled("EterClan") ? Clans.member(player) : -1;
+            case CLAN_LAND -> enabled("EterClan") ? Clans.land(player) : -1;
             case PASS_TIER -> enabled("EterReward") ? Rewards.passTier(player) : -1;
             case DAILY -> enabled("EterReward") ? Rewards.daily(player) : -1;
             default -> -1;
@@ -56,6 +57,11 @@ final class States {
     private static final class Clans {
         static long member(UUID player) {
             return ClanApi.get().map(api -> api.clanOf(player).isPresent() ? 1L : 0L).orElse(-1L);
+        }
+
+        /** Chunks du clan du joueur (0 sans clan). */
+        static long land(UUID player) {
+            return ClanApi.get().map(api -> api.clanOf(player).map(clan -> (long) clan.chunks()).orElse(0L)).orElse(-1L);
         }
     }
 

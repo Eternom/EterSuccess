@@ -16,8 +16,8 @@ public record Achievement(String id, String category, Kind kind, Set<Material> b
 
     /** Ce qu'un succès compte. Les « états » (job, homes, money...) sont relus régulièrement, pas comptés. */
     public enum Kind {
-        BREAK, HARVEST, KILL, FISH, BREED, ENCHANT, DEATH, PLAYTIME, RESOURCE, QUEST, CHALLENGE,
-        JOB(true), HOMES(true), MONEY(true), CLAN(true), PASS_TIER(true), DAILY(true);
+        BREAK, HARVEST, KILL, FISH, BREED, ENCHANT, DEATH, PLAYTIME, RESOURCE, QUEST, CHALLENGE, SELL, BUY, DAILY_SERIES,
+        JOB(true), HOMES(true), MONEY(true), CLAN(true), CLAN_LAND(true), PASS_TIER(true), DAILY(true);
 
         private final boolean state;
 

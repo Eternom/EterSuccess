@@ -28,6 +28,8 @@ categories:
   legendes: { icon: DRAGON_HEAD }
   metiers: { icon: WRITABLE_BOOK }
   defis: { icon: TARGET }
+  commerce: { icon: EMERALD }
+  clans: { icon: WHITE_BANNER }
   richesse: { icon: GOLD_INGOT }
   aventure: { icon: COMPASS }
 
@@ -749,3 +751,33 @@ achievements:
     subject: deaths
     icon: SKELETON_SKULL
     tiers: [ 10, 100, 500, 1000, 5000 ]
+  commerce-ventes:
+    category: commerce
+    kind: sell
+    subject: sales
+    icon: EMERALD
+    tiers: [ 5, 50, 250, 1000, 5000 ]
+  commerce-achats:
+    category: commerce
+    kind: buy
+    subject: purchases
+    icon: GOLD_INGOT
+    tiers: [ 5, 50, 250, 1000, 5000 ]
+  clan-territoire:
+    category: clans
+    kind: clan-land
+    subject: clan-land
+    icon: WHITE_BANNER
+    tiers: [ 10, 25, 50, 100, 250 ]
+  aventure-series:
+    category: aventure
+    kind: daily-series
+    subject: daily-series
+    icon: CHEST
+    tiers: [ 1, 5, 20, 50, 100 ]
+  aventure-homes:
+    category: aventure
+    kind: homes
+    subject: homes
+    icon: RED_BED
+    tiers: [ 1, 2, 3, 5, 10 ]

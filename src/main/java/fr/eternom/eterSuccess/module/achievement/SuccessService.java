@@ -94,6 +94,17 @@ public class SuccessService {
         }
     }
 
+    /** Une action d'un joueur peut-être hors ligne ou ailleurs (ex : le vendeur d'une annonce) : comptée par son UUID. */
+    public void countUuid(UUID player, Kind kind, long amount) {
+        for (Achievement achievement : byKind.getOrDefault(kind, List.of())) {
+            pending.compute(player, (uuid, counts) -> {
+                Map<String, Long> map = counts == null ? new HashMap<>() : counts;
+                map.merge(achievement.id(), amount, Long::sum);
+                return map;
+            });
+        }
+    }
+
     public void countBlock(Player player, Kind kind, Material material) {
         count(player, kind, achievement -> achievement.matchesBlock(material), 1);
     }
@@ -109,6 +120,9 @@ public class SuccessService {
     private void flushAll() {
         for (UUID uuid : List.copyOf(pending.keySet())) {
             flush(uuid);
+            if (Bukkit.getPlayer(uuid) == null) {
+                unlocked.remove(uuid); // compté hors ligne (vendeur d'une annonce) : rien à garder en mémoire
+            }
         }
     }
 
@@ -196,6 +210,7 @@ public class SuccessService {
             if (guided) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> guide(player), 40);
             }
+            publishTag(player);
         });
     }
 
@@ -206,6 +221,7 @@ public class SuccessService {
         UUID uuid = player.getUniqueId();
         Tasks.async(plugin, player, () -> store.tiers(uuid), tiers -> {
             unlocked.put(uuid, new ConcurrentHashMap<>(tiers));
+            publishTag(player);
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if (player.isOnline()) {
                     guide(player);
@@ -247,6 +263,37 @@ public class SuccessService {
 
     private boolean isGuided(Achievement achievement) {
         return categories.stream().anyMatch(category -> category.guided() && category.id().equals(achievement.category()));
+    }
+
+    // ---------- Sidebar ----------
+
+    /**
+     * Ligne des succès dans la sidebar d'EterTab (étiquette <tag_success> d'EterLib) : l'étape des Premiers pas tant
+     * qu'ils ne sont pas finis, puis les points de succès. À l'arrivée et à chaque déblocage.
+     */
+    void publishTag(Player player) {
+        UUID uuid = player.getUniqueId();
+        Tasks.async(plugin, player, () -> store.points(uuid), points -> {
+            Map<String, Integer> known = unlocked.getOrDefault(uuid, Map.of());
+            String value = null;
+            for (Category category : categories) {
+                if (!category.guided()) {
+                    continue;
+                }
+                List<Achievement> steps = category.achievements();
+                long done = steps.stream().filter(step -> known.getOrDefault(step.id(), 0) > 0).count();
+                if (done < steps.size()) {
+                    String format = messages.raw(player, "sidebar.step");
+                    value = format == null ? null : format.replace("<step>", String.valueOf(done + 1))
+                            .replace("<steps>", String.valueOf(steps.size()));
+                }
+            }
+            if (value == null) {
+                String format = messages.raw(player, "sidebar.points");
+                value = format == null ? "" : format.replace("<points>", String.valueOf(points));
+            }
+            fr.eternom.eterLib.EterLib.get().getPlayerTags().set(player, "success", value);
+        }, () -> { });
     }
 
     // ---------- Menus ----------
