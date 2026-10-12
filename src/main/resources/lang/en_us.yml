@@ -9,7 +9,7 @@ unlock:
   legend: "<accent><player></accent> <info>reached tier <accent>V</accent> of <accent><name></accent>!"
 
 guide:
-  next: "<info>First steps <dark_gray>(<step>/<steps>)</dark_gray>: <accent><hint>"
+  next: "<info>First steps <dark_gray>(<step>/<steps>)</dark_gray>: <accent><hint></accent> <dark_gray>· the whole server is in /menu"
   button: "<accent><bold>[See my achievements]</bold></accent>"
   button-hover: "<info>Open <accent>/succes"
 

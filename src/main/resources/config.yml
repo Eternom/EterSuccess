@@ -31,4 +31,4 @@ tiers:
 # Bouton en bas du menu /succes : avec une commande (sans le /), il la lance pour le joueur (ex : "profile") ;
 # vide, il ferme le menu.
 menus:
-  back-command: ""
+  back-command: "menu progression"
