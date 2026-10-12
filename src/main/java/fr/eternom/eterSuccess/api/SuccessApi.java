@@ -3,6 +3,7 @@ package fr.eternom.eterSuccess.api;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +25,16 @@ public interface SuccessApi {
 
     /** Niveau débloqué d'un succès (0 : aucun). Bloquant (base). */
     int tier(UUID player, String achievement);
+
+    /** Un joueur et ses points dans le classement. */
+    record Ranked(UUID player, long points) {
+    }
+
+    /** Les joueurs qui ont le plus de points de succès, du premier au dernier. Bloquant (base). */
+    List<Ranked> top(int limit);
+
+    /** Place du joueur dans ce classement (1 = premier), 0 sans aucun succès. Bloquant (base). */
+    int rank(UUID player);
 
     /** Le menu /succes. Thread principal. */
     void openMenu(Player player);

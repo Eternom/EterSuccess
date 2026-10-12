@@ -6,7 +6,7 @@ pierres). Document développeur, à tenir à jour avec le code.
 
 ## Prérequis
 
-- **EterLib 1.11.0+** (`depend`) : base, langues, menus, et `PlacedBlocks` (seuls les blocs naturels comptent).
+- **EterLib 1.12.0+** (`depend`) : base, langues, menus, `RankingSource` et `PlacedBlocks` (seuls les blocs naturels comptent).
 - **EterEconomy** (`depend`, son API `EconomyApi`) : l'argent des récompenses, et l'état « argent ».
 - Facultatifs (`softdepend`), chacun lu dans sa propre classe, chargée seulement s'il est là (`States`, `NetworkListeners`) :
   - **EterMarket 1.5.0+** : `JobQuestCompleteEvent` (succès de quêtes) et l'état « métier » (`MarketApi`) ;
@@ -63,5 +63,6 @@ pas). Le nom d'un succès est celui du bloc ou de la créature, **traduit par le
 
 `fr.eternom.eterSuccess.api.SuccessApi` (`SuccessApi.get()`) : personne d'autre ne lit les tables `etersuccess_*`.
 
-- `points(uuid)`, `tier(uuid, succès)` (bloquants) ; `openMenu(joueur)` : le menu `/succes` ;
+- `points(uuid)`, `tier(uuid, succès)`, `top(n)`, `rank(uuid)` (bloquants) ; `openMenu(joueur)` : le menu `/succes` ;
+- source de classement `success` (EterLib `RankingSource`) : les points, pour `/classement` d'EterReward ;
 - événement `AchievementUnlockEvent` (joueur, succès, niveau, points).

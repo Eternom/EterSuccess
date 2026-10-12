@@ -27,6 +27,16 @@ public class SuccessApiService implements SuccessApi {
     }
 
     @Override
+    public java.util.List<Ranked> top(int limit) {
+        return store.top(limit);
+    }
+
+    @Override
+    public int rank(UUID player) {
+        return store.rank(player);
+    }
+
+    @Override
     public void openMenu(Player player) {
         success.open(player);
     }

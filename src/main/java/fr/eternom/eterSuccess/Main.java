@@ -22,8 +22,8 @@ import java.util.List;
  */
 public final class Main extends JavaPlugin {
 
-    /** PlacedBlocks (blocs posés par un joueur) depuis 1.11.0. */
-    private static final String REQUIRED_ETERLIB = "1.11.0";
+    /** PlacedBlocks (blocs posés par un joueur) depuis 1.11.0, RankingSource (classement des points) depuis 1.12.0. */
+    private static final String REQUIRED_ETERLIB = "1.12.0";
     private static final String TABLE_PREFIX = "etersuccess_";
 
     private Messages messages;
@@ -48,6 +48,9 @@ public final class Main extends JavaPlugin {
                 lib.backButton(getConfig().getString("menus.back-command", "")));
         getLogger().info(success.count() + " succès chargés (" + success.total() + " niveaux)");
         getServer().getServicesManager().register(SuccessApi.class, new SuccessApiService(store, success), this, ServicePriority.Normal);
+        // Classement des points, lu par EterReward sans qu'il dépende d'EterSuccess (EterLib RankingSource)
+        getServer().getServicesManager().register(fr.eternom.eterLib.helper.ranking.RankingSource.class,
+                new fr.eternom.eterSuccess.module.achievement.SuccessRanking(store), this, ServicePriority.Normal);
 
         new Commands(this);
         new Events(this);

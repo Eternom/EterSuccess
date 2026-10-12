@@ -78,6 +78,24 @@ public class SuccessStore {
                 + " VALUES (?, ?, ?, ?, ?)", player, achievement, tier, points, System.currentTimeMillis()) > 0;
     }
 
+    /** Classement des points (somme des niveaux débloqués de chaque joueur). */
+    public List<fr.eternom.eterSuccess.api.SuccessApi.Ranked> top(int limit) {
+        return database.query("SELECT uuid, SUM(points) AS total FROM " + database.table(TIERS)
+                        + " GROUP BY uuid ORDER BY total DESC LIMIT ?", limit).stream()
+                .map(row -> new fr.eternom.eterSuccess.api.SuccessApi.Ranked(row.getUUID("uuid"), row.getLong("total")))
+                .toList();
+    }
+
+    /** Place du joueur (1 = premier), 0 sans aucun succès. */
+    public int rank(UUID player) {
+        int mine = points(player);
+        if (mine <= 0) {
+            return 0;
+        }
+        return (int) database.query("SELECT COUNT(*) AS above FROM (SELECT SUM(points) AS total FROM " + database.table(TIERS)
+                + " GROUP BY uuid) AS totals WHERE total > ?", mine).getFirst().getLong("above") + 1;
+    }
+
     public int points(UUID player) {
         List<Row> rows = database.query("SELECT COALESCE(SUM(points), 0) AS total FROM " + database.table(TIERS) + " WHERE uuid = ?",
                 player);
