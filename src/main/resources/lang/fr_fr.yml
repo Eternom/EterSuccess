@@ -1,0 +1,120 @@
+# Messages d'EterSuccess, format MiniMessage : https://docs.advntr.dev/minimessage/format
+# Balises de la palette (EterLib/config.yml > language.colors) : <primary> <accent> <info> <error> <success>
+# Les valeurs entre <> comme <target> sont remplies par le plugin. Pour afficher un "<", écrire \< entre 'guillemets simples'.
+# Une clé absente reprend le texte intégré au plugin : tu peux ne garder que les lignes que tu modifies.
+# Le nom d'un succès est celui du bloc ou de la créature, traduit par le jeu ; sinon name.<succès> ou subject.<sujet>.
+
+unlock:
+  message: "<info>Succès débloqué : <accent><name></accent> ! <accent>+<money></accent>, <accent>+<points> points</accent>."
+  step: "<success>Étape réussie :</success> <accent><name></accent> ! <accent>+<money></accent>."
+  legend: "<accent><player></accent> <info>atteint le niveau <accent>V</accent> du succès <accent><name></accent> !"
+
+guide:
+  next: "<info>Premiers pas <dark_gray>(<step>/<steps>)</dark_gray> : <accent><hint>"
+  button: "<accent><bold>[Voir mes succès]</bold></accent>"
+  button-hover: "<info>Ouvrir <accent>/succes"
+
+menu:
+  title: "<primary>Succès"
+  player: "<accent><player>"
+  points: "<dark_gray>▸ <info>Points de succès : <accent><points>"
+  unlocked: "<dark_gray>▸ <info>Niveaux débloqués : <accent><count></accent>/<accent><total>"
+  category-title: "<primary>Succès <dark_gray>·</dark_gray> <category>"
+  category:
+    progress: "<dark_gray>▸ <info>Niveaux : <accent><done></accent>/<accent><total>"
+    guided: "<accent>Commence ici !"
+    guided-done: "<success>Terminé"
+    open: "<accent>Clic <dark_gray>· <info>ouvrir"
+  step-name: "<accent>Étape <step></accent> <dark_gray>· <name>"
+  stars: "<accent><stars>"
+  progress: "<accent><bar></accent> <info><value>/<target>"
+  reward: "<dark_gray>▸ <info>Récompense : <accent><money></accent>, <accent><points> points"
+  hint: "<info>Indice : <accent><hint>"
+  complete: "<success>Terminé !"
+  previous: "<accent>« Page précédente"
+  next: "<accent>Page suivante »"
+  back: "<accent>« Catégories"
+
+category:
+  premiers-pas: "<primary>Premiers pas"
+  minage: "<primary>Minage"
+  terrassement: "<primary>Terrassement"
+  bois: "<primary>Bois"
+  cultures: "<primary>Cultures"
+  elevage: "<primary>Élevage"
+  peche: "<primary>Pêche"
+  chasse: "<primary>Chasse"
+  legendes: "<primary>Légendes"
+  metiers: "<primary>Métiers"
+  defis: "<primary>Défis et pass"
+  richesse: "<primary>Richesse"
+  aventure: "<primary>Aventure"
+
+# Premiers pas : nom et indice de chaque étape
+name:
+  pp-metier: "Un métier"
+  pp-maison: "Un chez-soi"
+  pp-recompense: "Récompense du jour"
+  pp-quete: "Première quête"
+  pp-ressource: "Monde ressource"
+  pp-defi: "Premier défi"
+  pp-epargne: "Premières économies"
+  pp-clan: "Un clan"
+  pp-pass: "Le pass de saison"
+hint:
+  pp-metier: "parle au PNJ de la guilde des métiers et choisis un métier."
+  pp-maison: "pose ta maison avec /sethome."
+  pp-recompense: "réclame ta récompense avec /daily."
+  pp-quete: "fais une quête du jour et livre-la au PNJ de ton métier."
+  pp-ressource: "pars en monde ressource avec /ressource."
+  pp-defi: "réussis un défi du jour (/defis)."
+  pp-epargne: "mets de côté 1 000 Heloks."
+  pp-clan: "rejoins ou crée un clan avec /clan."
+  pp-pass: "atteins le palier 3 du pass de saison (/pass)."
+
+# Noms des succès qui regroupent plusieurs choses
+subject:
+  any: "Tout"
+  ores: "Minerais"
+  stone: "Pierre"
+  logs: "Bûcheron"
+  crops: "Moissons"
+  breed: "Éleveur"
+  fishing: "Pêcheur"
+  treasure: "Trésors de pêche"
+  junk: "Déchets de pêche"
+  monsters: "Chasseur de monstres"
+  quests: "Quêtes de métier"
+  job-mineur: "Mineur"
+  job-bucheron: "Bûcheron"
+  job-fermier: "Fermier"
+  job-chasseur: "Chasseur"
+  job-pecheur: "Pêcheur"
+  daily-challenges: "Défis du jour"
+  weekly-challenges: "Défis de la semaine"
+  pass: "Pass de saison"
+  money: "Fortune"
+  playtime: "Temps de jeu"
+  resource: "Explorateur"
+  enchant: "Enchanteur"
+  deaths: "Mourir, ça arrive"
+
+# Description d'un niveau selon ce qu'il compte (<target> = le nombre, <subject> = le nom)
+kind:
+  break: "<info><subject> : en casser <accent><target></accent> (naturels)"
+  harvest: "<info><subject> : en récolter <accent><target></accent> (mûrs)"
+  kill: "<info><subject> : en tuer <accent><target>"
+  fish: "<info><subject> : en pêcher <accent><target>"
+  breed: "<info><subject> : faire naître <accent><target></accent> animaux"
+  enchant: "<info>Enchanter <accent><target></accent> objets"
+  death: "<info>Mourir <accent><target></accent> fois"
+  playtime: "<info>Jouer <accent><target></accent> minutes (actif)"
+  resource: "<info>Aller <accent><target></accent> fois en monde ressource"
+  quest: "<info><subject> : valider <accent><target></accent> quêtes"
+  challenge: "<info><subject> : en réussir <accent><target>"
+  job: "<info>Rejoindre un métier"
+  homes: "<info>Poser <accent><target></accent> home"
+  money: "<info>Avoir <accent><target></accent> Heloks"
+  clan: "<info>Rejoindre ou créer un clan"
+  pass_tier: "<info>Atteindre le palier <accent><target></accent> du pass"
+  daily: "<info>Réclamer la récompense du jour"

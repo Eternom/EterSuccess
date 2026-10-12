@@ -1,0 +1,751 @@
+# ============================================================
+#  Succès (/succes)
+# ============================================================
+#
+#  categories : dans l'ordre du menu ; guided = des étapes à faire dans l'ordre, avec un indice (Premiers pas).
+#  achievements : dans l'ordre de leur catégorie. Pour chacun :
+#    kind  : break (casser des blocs NATURELS : un bloc posé par un joueur ne compte pas), harvest (cultures mûres),
+#            kill, fish, breed (faire naître), enchant, death, playtime (minutes de jeu actif), resource (arrivées en
+#            monde ressource), quest (quêtes de métier), challenge (défis) ; états relus chaque minute : job, homes,
+#            money, clan, pass-tier, daily
+#    match : blocs, créatures ou prises qui comptent (vide : tout). Groupes : #ores, #logs, #crops, #stone, #monsters
+#    tag   : quest -> le métier ; challenge -> daily ou weekly ; fish -> fish, treasure ou junk
+#    tiers : de 1 à 5 niveaux (le compteur à atteindre pour chacun)
+#    subject : nom affiché (lang subject.<subject>) quand le nom du bloc ou de la créature ne suffit pas
+#    rewards : récompense de chaque niveau à la place de config.yml > tiers (money, points, commands)
+#  Les textes (noms, indices, descriptions) sont dans lang/. Ne pas renommer un succès : sa progression est gardée
+#  sous son identifiant.
+
+categories:
+  premiers-pas: { icon: OAK_SAPLING, guided: true }
+  minage: { icon: IRON_PICKAXE }
+  terrassement: { icon: IRON_SHOVEL }
+  bois: { icon: IRON_AXE }
+  cultures: { icon: WHEAT }
+  elevage: { icon: LEAD }
+  peche: { icon: FISHING_ROD }
+  chasse: { icon: IRON_SWORD }
+  legendes: { icon: DRAGON_HEAD }
+  metiers: { icon: WRITABLE_BOOK }
+  defis: { icon: TARGET }
+  richesse: { icon: GOLD_INGOT }
+  aventure: { icon: COMPASS }
+
+achievements:
+  pp-metier:
+    category: premiers-pas
+    kind: job
+    icon: IRON_PICKAXE
+    tiers: [ 1 ]
+    rewards:
+      - { money: 50, points: 2 }
+  pp-maison:
+    category: premiers-pas
+    kind: homes
+    icon: RED_BED
+    tiers: [ 1 ]
+    rewards:
+      - { money: 50, points: 2 }
+  pp-recompense:
+    category: premiers-pas
+    kind: daily
+    icon: CHEST
+    tiers: [ 1 ]
+    rewards:
+      - { money: 50, points: 2 }
+  pp-quete:
+    category: premiers-pas
+    kind: quest
+    icon: WRITABLE_BOOK
+    tiers: [ 1 ]
+    rewards:
+      - { money: 100, points: 2 }
+  pp-ressource:
+    category: premiers-pas
+    kind: resource
+    icon: GRASS_BLOCK
+    tiers: [ 1 ]
+    rewards:
+      - { money: 100, points: 2 }
+  pp-defi:
+    category: premiers-pas
+    kind: challenge
+    icon: TARGET
+    tiers: [ 1 ]
+    rewards:
+      - { money: 100, points: 2 }
+  pp-epargne:
+    category: premiers-pas
+    kind: money
+    icon: GOLD_NUGGET
+    tiers: [ 1000 ]
+    rewards:
+      - { money: 150, points: 2 }
+  pp-clan:
+    category: premiers-pas
+    kind: clan
+    icon: WHITE_BANNER
+    tiers: [ 1 ]
+    rewards:
+      - { money: 150, points: 2 }
+  pp-pass:
+    category: premiers-pas
+    kind: pass-tier
+    icon: NETHER_STAR
+    tiers: [ 3 ]
+    rewards:
+      - { money: 300, points: 5, commands: [ "eterresource givekey {player} 2" ] }
+  mine-charbon:
+    category: minage
+    kind: break
+    match: [ "coal_ore", "deepslate_coal_ore" ]
+    icon: COAL_ORE
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  mine-cuivre:
+    category: minage
+    kind: break
+    match: [ "copper_ore", "deepslate_copper_ore" ]
+    icon: COPPER_ORE
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  mine-fer:
+    category: minage
+    kind: break
+    match: [ "iron_ore", "deepslate_iron_ore" ]
+    icon: IRON_ORE
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  mine-or:
+    category: minage
+    kind: break
+    match: [ "gold_ore", "deepslate_gold_ore" ]
+    icon: GOLD_ORE
+    tiers: [ 32, 256, 1024, 4096, 16384 ]
+  mine-redstone:
+    category: minage
+    kind: break
+    match: [ "redstone_ore", "deepslate_redstone_ore" ]
+    icon: REDSTONE_ORE
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  mine-lapis:
+    category: minage
+    kind: break
+    match: [ "lapis_ore", "deepslate_lapis_ore" ]
+    icon: LAPIS_ORE
+    tiers: [ 32, 256, 1024, 4096, 16384 ]
+  mine-diamant:
+    category: minage
+    kind: break
+    match: [ "diamond_ore", "deepslate_diamond_ore" ]
+    icon: DIAMOND_ORE
+    tiers: [ 16, 128, 512, 2048, 8192 ]
+  mine-emeraude:
+    category: minage
+    kind: break
+    match: [ "emerald_ore", "deepslate_emerald_ore" ]
+    icon: EMERALD_ORE
+    tiers: [ 8, 64, 256, 1024, 4096 ]
+  mine-quartz:
+    category: minage
+    kind: break
+    match: [ "nether_quartz_ore" ]
+    icon: NETHER_QUARTZ_ORE
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  mine-or-nether:
+    category: minage
+    kind: break
+    match: [ "nether_gold_ore" ]
+    icon: NETHER_GOLD_ORE
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  mine-debris:
+    category: minage
+    kind: break
+    match: [ "ancient_debris" ]
+    icon: ANCIENT_DEBRIS
+    tiers: [ 8, 64, 256, 1024, 4096 ]
+  mine-amethyste:
+    category: minage
+    kind: break
+    match: [ "amethyst_cluster" ]
+    icon: AMETHYST_CLUSTER
+    tiers: [ 32, 256, 1024, 4096, 16384 ]
+  mine-obsidienne:
+    category: minage
+    kind: break
+    match: [ "obsidian" ]
+    icon: OBSIDIAN
+    tiers: [ 16, 128, 512, 2048, 8192 ]
+  mine-total:
+    category: minage
+    kind: break
+    match: [ "#ores" ]
+    subject: ores
+    icon: DIAMOND_PICKAXE
+    tiers: [ 500, 5000, 25000, 100000, 500000 ]
+  mine-pierre:
+    category: minage
+    kind: break
+    match: [ "#stone" ]
+    subject: stone
+    icon: STONE
+    tiers: [ 1000, 10000, 50000, 250000, 1000000 ]
+  mine-ardoise:
+    category: minage
+    kind: break
+    match: [ "deepslate" ]
+    icon: DEEPSLATE
+    tiers: [ 500, 5000, 25000, 100000, 500000 ]
+  mine-netherrack:
+    category: minage
+    kind: break
+    match: [ "netherrack" ]
+    icon: NETHERRACK
+    tiers: [ 1000, 10000, 50000, 250000, 1000000 ]
+  mine-end:
+    category: minage
+    kind: break
+    match: [ "end_stone" ]
+    icon: END_STONE
+    tiers: [ 500, 5000, 25000, 100000, 500000 ]
+  mine-blackstone:
+    category: minage
+    kind: break
+    match: [ "blackstone" ]
+    icon: BLACKSTONE
+    tiers: [ 500, 5000, 25000, 100000, 500000 ]
+  mine-basalte:
+    category: minage
+    kind: break
+    match: [ "basalt" ]
+    icon: BASALT
+    tiers: [ 500, 5000, 25000, 100000, 500000 ]
+  terre-terre:
+    category: terrassement
+    kind: break
+    match: [ "dirt", "grass_block" ]
+    icon: DIRT
+    tiers: [ 500, 5000, 25000, 100000, 500000 ]
+  terre-sable:
+    category: terrassement
+    kind: break
+    match: [ "sand" ]
+    icon: SAND
+    tiers: [ 500, 5000, 25000, 100000, 500000 ]
+  terre-sable-rouge:
+    category: terrassement
+    kind: break
+    match: [ "red_sand" ]
+    icon: RED_SAND
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  terre-gravier:
+    category: terrassement
+    kind: break
+    match: [ "gravel" ]
+    icon: GRAVEL
+    tiers: [ 500, 5000, 25000, 100000, 500000 ]
+  terre-argile:
+    category: terrassement
+    kind: break
+    match: [ "clay" ]
+    icon: CLAY
+    tiers: [ 32, 256, 1024, 4096, 16384 ]
+  bois-chene:
+    category: bois
+    kind: break
+    match: [ "oak_log" ]
+    icon: OAK_LOG
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-sapin:
+    category: bois
+    kind: break
+    match: [ "spruce_log" ]
+    icon: SPRUCE_LOG
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-bouleau:
+    category: bois
+    kind: break
+    match: [ "birch_log" ]
+    icon: BIRCH_LOG
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-jungle:
+    category: bois
+    kind: break
+    match: [ "jungle_log" ]
+    icon: JUNGLE_LOG
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-acacia:
+    category: bois
+    kind: break
+    match: [ "acacia_log" ]
+    icon: ACACIA_LOG
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-chene-noir:
+    category: bois
+    kind: break
+    match: [ "dark_oak_log" ]
+    icon: DARK_OAK_LOG
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-paletuvier:
+    category: bois
+    kind: break
+    match: [ "mangrove_log" ]
+    icon: MANGROVE_LOG
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-cerisier:
+    category: bois
+    kind: break
+    match: [ "cherry_log" ]
+    icon: CHERRY_LOG
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-chene-pale:
+    category: bois
+    kind: break
+    match: [ "pale_oak_log" ]
+    icon: PALE_OAK_LOG
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-carmin:
+    category: bois
+    kind: break
+    match: [ "crimson_stem" ]
+    icon: CRIMSON_STEM
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-biscornu:
+    category: bois
+    kind: break
+    match: [ "warped_stem" ]
+    icon: WARPED_STEM
+    tiers: [ 64, 512, 2048, 8192, 32768 ]
+  bois-total:
+    category: bois
+    kind: break
+    match: [ "#logs" ]
+    subject: logs
+    icon: DIAMOND_AXE
+    tiers: [ 500, 5000, 25000, 100000, 500000 ]
+  culture-ble:
+    category: cultures
+    kind: harvest
+    match: [ "wheat" ]
+    icon: WHEAT
+    tiers: [ 128, 1024, 8192, 32768, 131072 ]
+  culture-carotte:
+    category: cultures
+    kind: harvest
+    match: [ "carrots" ]
+    icon: CARROT
+    tiers: [ 128, 1024, 8192, 32768, 131072 ]
+  culture-patate:
+    category: cultures
+    kind: harvest
+    match: [ "potatoes" ]
+    icon: POTATO
+    tiers: [ 128, 1024, 8192, 32768, 131072 ]
+  culture-betterave:
+    category: cultures
+    kind: harvest
+    match: [ "beetroots" ]
+    icon: BEETROOT
+    tiers: [ 128, 1024, 8192, 32768, 131072 ]
+  culture-verrue:
+    category: cultures
+    kind: harvest
+    match: [ "nether_wart" ]
+    icon: NETHER_WART
+    tiers: [ 128, 1024, 8192, 32768, 131072 ]
+  culture-total:
+    category: cultures
+    kind: harvest
+    match: [ "#crops" ]
+    subject: crops
+    icon: DIAMOND_HOE
+    tiers: [ 500, 5000, 25000, 100000, 500000 ]
+  culture-melon:
+    category: cultures
+    kind: break
+    match: [ "melon" ]
+    icon: MELON
+    tiers: [ 32, 256, 1024, 4096, 16384 ]
+  culture-citrouille:
+    category: cultures
+    kind: break
+    match: [ "pumpkin" ]
+    icon: PUMPKIN
+    tiers: [ 32, 256, 1024, 4096, 16384 ]
+  culture-canne:
+    category: cultures
+    kind: break
+    match: [ "sugar_cane" ]
+    icon: SUGAR_CANE
+    tiers: [ 128, 1024, 8192, 32768, 131072 ]
+  culture-cactus:
+    category: cultures
+    kind: break
+    match: [ "cactus" ]
+    icon: CACTUS
+    tiers: [ 32, 256, 1024, 4096, 16384 ]
+  culture-bambou:
+    category: cultures
+    kind: break
+    match: [ "bamboo" ]
+    icon: BAMBOO
+    tiers: [ 128, 1024, 8192, 32768, 131072 ]
+  elevage-vache:
+    category: elevage
+    kind: breed
+    match: [ "cow" ]
+    icon: LEATHER
+    tiers: [ 10, 100, 500, 2000, 8000 ]
+  elevage-mouton:
+    category: elevage
+    kind: breed
+    match: [ "sheep" ]
+    icon: WHITE_WOOL
+    tiers: [ 10, 100, 500, 2000, 8000 ]
+  elevage-cochon:
+    category: elevage
+    kind: breed
+    match: [ "pig" ]
+    icon: PORKCHOP
+    tiers: [ 10, 100, 500, 2000, 8000 ]
+  elevage-poule:
+    category: elevage
+    kind: breed
+    match: [ "chicken" ]
+    icon: EGG
+    tiers: [ 10, 100, 500, 2000, 8000 ]
+  elevage-lapin:
+    category: elevage
+    kind: breed
+    match: [ "rabbit" ]
+    icon: RABBIT_HIDE
+    tiers: [ 10, 100, 500, 2000, 8000 ]
+  elevage-chevre:
+    category: elevage
+    kind: breed
+    match: [ "goat" ]
+    icon: GOAT_HORN
+    tiers: [ 10, 100, 500, 2000, 8000 ]
+  elevage-cheval:
+    category: elevage
+    kind: breed
+    match: [ "horse" ]
+    icon: SADDLE
+    tiers: [ 10, 100, 500, 2000, 8000 ]
+  elevage-total:
+    category: elevage
+    kind: breed
+    subject: breed
+    icon: WHEAT
+    tiers: [ 20, 200, 1000, 5000, 20000 ]
+  peche-total:
+    category: peche
+    kind: fish
+    subject: fishing
+    icon: FISHING_ROD
+    tiers: [ 50, 500, 2000, 8000, 25000 ]
+  peche-morue:
+    category: peche
+    kind: fish
+    match: [ "cod" ]
+    tag: fish
+    icon: COD
+    tiers: [ 25, 250, 1000, 4000, 15000 ]
+  peche-saumon:
+    category: peche
+    kind: fish
+    match: [ "salmon" ]
+    tag: fish
+    icon: SALMON
+    tiers: [ 25, 250, 1000, 4000, 15000 ]
+  peche-tropical:
+    category: peche
+    kind: fish
+    match: [ "tropical_fish" ]
+    tag: fish
+    icon: TROPICAL_FISH
+    tiers: [ 25, 250, 1000, 4000, 15000 ]
+  peche-globe:
+    category: peche
+    kind: fish
+    match: [ "pufferfish" ]
+    tag: fish
+    icon: PUFFERFISH
+    tiers: [ 25, 250, 1000, 4000, 15000 ]
+  peche-tresor:
+    category: peche
+    kind: fish
+    tag: treasure
+    subject: treasure
+    icon: NAUTILUS_SHELL
+    tiers: [ 5, 50, 200, 800, 3000 ]
+  peche-dechets:
+    category: peche
+    kind: fish
+    tag: junk
+    subject: junk
+    icon: LEATHER_BOOTS
+    tiers: [ 10, 100, 500, 2000, 8000 ]
+  chasse-zombie:
+    category: chasse
+    kind: kill
+    match: [ "zombie", "husk" ]
+    icon: ZOMBIE_HEAD
+    tiers: [ 50, 500, 2500, 10000, 50000 ]
+  chasse-squelette:
+    category: chasse
+    kind: kill
+    match: [ "skeleton", "stray", "bogged" ]
+    icon: SKELETON_SKULL
+    tiers: [ 50, 500, 2500, 10000, 50000 ]
+  chasse-creeper:
+    category: chasse
+    kind: kill
+    match: [ "creeper" ]
+    icon: CREEPER_HEAD
+    tiers: [ 50, 500, 2500, 10000, 50000 ]
+  chasse-araignee:
+    category: chasse
+    kind: kill
+    match: [ "spider", "cave_spider" ]
+    icon: SPIDER_EYE
+    tiers: [ 50, 500, 2500, 10000, 50000 ]
+  chasse-noye:
+    category: chasse
+    kind: kill
+    match: [ "drowned" ]
+    icon: TRIDENT
+    tiers: [ 50, 500, 2500, 10000, 50000 ]
+  chasse-slime:
+    category: chasse
+    kind: kill
+    match: [ "slime" ]
+    icon: SLIME_BALL
+    tiers: [ 50, 500, 2500, 10000, 50000 ]
+  chasse-poisson-argent:
+    category: chasse
+    kind: kill
+    match: [ "silverfish" ]
+    icon: STONE_BRICKS
+    tiers: [ 50, 500, 2500, 10000, 50000 ]
+  chasse-magma:
+    category: chasse
+    kind: kill
+    match: [ "magma_cube" ]
+    icon: MAGMA_CREAM
+    tiers: [ 50, 500, 2500, 10000, 50000 ]
+  chasse-enderman:
+    category: chasse
+    kind: kill
+    match: [ "enderman" ]
+    icon: ENDER_PEARL
+    tiers: [ 25, 250, 1000, 5000, 20000 ]
+  chasse-sorciere:
+    category: chasse
+    kind: kill
+    match: [ "witch" ]
+    icon: GLASS_BOTTLE
+    tiers: [ 25, 250, 1000, 5000, 20000 ]
+  chasse-phantom:
+    category: chasse
+    kind: kill
+    match: [ "phantom" ]
+    icon: PHANTOM_MEMBRANE
+    tiers: [ 25, 250, 1000, 5000, 20000 ]
+  chasse-pillard:
+    category: chasse
+    kind: kill
+    match: [ "pillager" ]
+    icon: CROSSBOW
+    tiers: [ 25, 250, 1000, 5000, 20000 ]
+  chasse-ghast:
+    category: chasse
+    kind: kill
+    match: [ "ghast" ]
+    icon: GHAST_TEAR
+    tiers: [ 25, 250, 1000, 5000, 20000 ]
+  chasse-blaze:
+    category: chasse
+    kind: kill
+    match: [ "blaze" ]
+    icon: BLAZE_ROD
+    tiers: [ 25, 250, 1000, 5000, 20000 ]
+  chasse-wither-squelette:
+    category: chasse
+    kind: kill
+    match: [ "wither_skeleton" ]
+    icon: WITHER_SKELETON_SKULL
+    tiers: [ 25, 250, 1000, 5000, 20000 ]
+  chasse-hoglin:
+    category: chasse
+    kind: kill
+    match: [ "hoglin" ]
+    icon: COOKED_PORKCHOP
+    tiers: [ 25, 250, 1000, 5000, 20000 ]
+  chasse-gardien:
+    category: chasse
+    kind: kill
+    match: [ "guardian" ]
+    icon: PRISMARINE_SHARD
+    tiers: [ 25, 250, 1000, 5000, 20000 ]
+  chasse-shulker:
+    category: chasse
+    kind: kill
+    match: [ "shulker" ]
+    icon: SHULKER_SHELL
+    tiers: [ 25, 250, 1000, 5000, 20000 ]
+  chasse-vindicateur:
+    category: chasse
+    kind: kill
+    match: [ "vindicator" ]
+    icon: IRON_AXE
+    tiers: [ 10, 100, 500, 2000, 10000 ]
+  chasse-evocateur:
+    category: chasse
+    kind: kill
+    match: [ "evoker" ]
+    icon: TOTEM_OF_UNDYING
+    tiers: [ 10, 100, 500, 2000, 10000 ]
+  chasse-ravageur:
+    category: chasse
+    kind: kill
+    match: [ "ravager" ]
+    icon: SADDLE
+    tiers: [ 10, 100, 500, 2000, 10000 ]
+  chasse-brute:
+    category: chasse
+    kind: kill
+    match: [ "piglin_brute" ]
+    icon: GOLDEN_AXE
+    tiers: [ 10, 100, 500, 2000, 10000 ]
+  chasse-breeze:
+    category: chasse
+    kind: kill
+    match: [ "breeze" ]
+    icon: WIND_CHARGE
+    tiers: [ 10, 100, 500, 2000, 10000 ]
+  chasse-vex:
+    category: chasse
+    kind: kill
+    match: [ "vex" ]
+    icon: IRON_SWORD
+    tiers: [ 10, 100, 500, 2000, 10000 ]
+  chasse-total:
+    category: chasse
+    kind: kill
+    match: [ "#monsters" ]
+    subject: monsters
+    icon: NETHERITE_SWORD
+    tiers: [ 1000, 10000, 50000, 250000, 1000000 ]
+  legende-wither:
+    category: legendes
+    kind: kill
+    match: [ "wither" ]
+    icon: NETHER_STAR
+    tiers: [ 1, 5, 25, 100, 500 ]
+  legende-dragon:
+    category: legendes
+    kind: kill
+    match: [ "ender_dragon" ]
+    icon: DRAGON_HEAD
+    tiers: [ 1, 3, 10, 25, 100 ]
+  legende-gardien:
+    category: legendes
+    kind: kill
+    match: [ "elder_guardian" ]
+    icon: SPONGE
+    tiers: [ 1, 5, 20, 50, 200 ]
+  legende-warden:
+    category: legendes
+    kind: kill
+    match: [ "warden" ]
+    icon: SCULK_CATALYST
+    tiers: [ 1, 3, 10, 25, 50 ]
+  metier-total:
+    category: metiers
+    kind: quest
+    subject: quests
+    icon: WRITABLE_BOOK
+    tiers: [ 10, 100, 500, 2000, 10000 ]
+  metier-mineur:
+    category: metiers
+    kind: quest
+    tag: mineur
+    subject: job-mineur
+    icon: IRON_PICKAXE
+    tiers: [ 5, 50, 250, 1000, 5000 ]
+  metier-bucheron:
+    category: metiers
+    kind: quest
+    tag: bucheron
+    subject: job-bucheron
+    icon: IRON_AXE
+    tiers: [ 5, 50, 250, 1000, 5000 ]
+  metier-fermier:
+    category: metiers
+    kind: quest
+    tag: fermier
+    subject: job-fermier
+    icon: IRON_HOE
+    tiers: [ 5, 50, 250, 1000, 5000 ]
+  metier-chasseur:
+    category: metiers
+    kind: quest
+    tag: chasseur
+    subject: job-chasseur
+    icon: IRON_SWORD
+    tiers: [ 5, 50, 250, 1000, 5000 ]
+  metier-pecheur:
+    category: metiers
+    kind: quest
+    tag: pecheur
+    subject: job-pecheur
+    icon: FISHING_ROD
+    tiers: [ 5, 50, 250, 1000, 5000 ]
+  defi-jour:
+    category: defis
+    kind: challenge
+    tag: daily
+    subject: daily-challenges
+    icon: SUNFLOWER
+    tiers: [ 10, 100, 500, 1500, 5000 ]
+  defi-semaine:
+    category: defis
+    kind: challenge
+    tag: weekly
+    subject: weekly-challenges
+    icon: CLOCK
+    tiers: [ 5, 25, 100, 250, 500 ]
+  defi-pass:
+    category: defis
+    kind: pass-tier
+    subject: pass
+    icon: NETHER_STAR
+    tiers: [ 5, 10, 20, 30 ]
+  richesse-fortune:
+    category: richesse
+    kind: money
+    subject: money
+    icon: GOLD_BLOCK
+    tiers: [ 10000, 100000, 500000, 2000000, 10000000 ]
+  aventure-temps:
+    category: aventure
+    kind: playtime
+    subject: playtime
+    icon: CLOCK
+    tiers: [ 600, 6000, 30000, 60000, 150000 ]
+  aventure-ressource:
+    category: aventure
+    kind: resource
+    subject: resource
+    icon: GRASS_BLOCK
+    tiers: [ 10, 100, 500, 2000, 5000 ]
+  aventure-enchant:
+    category: aventure
+    kind: enchant
+    subject: enchant
+    icon: ENCHANTING_TABLE
+    tiers: [ 10, 100, 500, 2000, 10000 ]
+  aventure-morts:
+    category: aventure
+    kind: death
+    subject: deaths
+    icon: SKELETON_SKULL
+    tiers: [ 10, 100, 500, 1000, 5000 ]

@@ -1,0 +1,34 @@
+# ============================================================
+#  EterSuccess
+# ============================================================
+#
+#  Les succès sont dans achievements.yml (copié au premier démarrage), leurs textes dans lang/.
+#  Toute modification nécessite un redémarrage du serveur.
+
+# Récompense par défaut de chaque niveau (un succès peut la changer dans achievements.yml > rewards).
+# Les points de succès s'additionnent (classements à venir). Les niveaux IV et V sont faits pour être longs :
+# l'argent y est plus gros, mais rare. Repère : ~80 succès × niveau I = ~1 600 Heloks pour un joueur qui touche à tout.
+#   money    : argent (EterEconomy)
+#   points   : points de succès
+#   commands : commandes lancées par la console, {player} = le pseudo
+tiers:
+  1:
+    money: 20
+    points: 1
+  2:
+    money: 60
+    points: 3
+  3:
+    money: 200
+    points: 10
+  4:
+    money: 750
+    points: 30
+  5:
+    money: 3000
+    points: 100
+
+# Bouton en bas du menu /succes : avec une commande (sans le /), il la lance pour le joueur (ex : "profile") ;
+# vide, il ferme le menu.
+menus:
+  back-command: ""

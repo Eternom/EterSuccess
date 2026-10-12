@@ -1,0 +1,29 @@
+name: EterSuccess
+version: '${version}'
+
+main: fr.eternom.eterSuccess.Main
+api-version: '26.2'
+load: POSTWORLD
+authors: [ NadTum ]
+description: Succès du réseau (Premiers pas pour guider les nouveaux, puis des centaines de niveaux).
+depend: [EterLib, EterEconomy]
+# Ce que les succès lisent ou écoutent : quêtes (EterMarket), défis et pass (EterReward), monde ressource
+# (EterResource), homes (EterHome), clan (EterClan). Chacun est facultatif.
+softdepend: [EterMarket, EterReward, EterResource, EterHome, EterClan]
+
+commands:
+  succes:
+    description: Tes succès, et les étapes des Premiers pas.
+    usage: /succes
+    aliases: [success, achievements]
+    permission: etersuccess.use
+
+permissions:
+  etersuccess.use:
+    description: Voir ses succès.
+    default: true
+  etersuccess.admin:
+    description: Toutes les permissions d'EterSuccess.
+    default: op
+    children:
+      etersuccess.use: true
