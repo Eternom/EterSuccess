@@ -5,6 +5,7 @@ import fr.eternom.eterLib.helper.gui.Frame;
 import fr.eternom.eterLib.helper.gui.Items;
 import fr.eternom.eterLib.helper.gui.Menu;
 import fr.eternom.eterLib.helper.gui.Sounds;
+import fr.eternom.eterLib.helper.message.Numbers;
 import fr.eternom.eterSuccess.module.achievement.Achievement.Reward;
 import fr.eternom.eterSuccess.module.achievement.AchievementCatalog.Category;
 import fr.eternom.eterSuccess.module.achievement.SuccessService.View;
@@ -101,7 +102,7 @@ class CategoryMenu implements Menu {
                 long shown = Math.min(value, target);
                 int filled = (int) Math.floor(BAR * (double) shown / target);
                 lore.add(text("menu.progress", "bar", "■".repeat(filled) + "□".repeat(BAR - filled),
-                        "value", SuccessService.formatNumber(shown), "target", SuccessService.formatNumber(target)));
+                        "value", Numbers.format(shown), "target", Numbers.format(target)));
             }
             Reward reward = achievement.reward(tier + 1);
             lore.add(text("menu.reward", "money", Money.format(reward.money()), "points", String.valueOf(reward.points())));

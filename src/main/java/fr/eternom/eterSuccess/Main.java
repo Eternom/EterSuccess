@@ -2,12 +2,14 @@ package fr.eternom.eterSuccess;
 
 import fr.eternom.eterLib.EterLib;
 import fr.eternom.eterLib.helper.message.Messages;
+import fr.eternom.eterLib.helper.ranking.RankingSource;
 import fr.eternom.eterSuccess.api.SuccessApi;
 import fr.eternom.eterSuccess.listeners.Commands;
 import fr.eternom.eterSuccess.listeners.Events;
 import fr.eternom.eterSuccess.module.achievement.Achievement.Reward;
 import fr.eternom.eterSuccess.module.achievement.AchievementCatalog;
 import fr.eternom.eterSuccess.module.achievement.SuccessApiService;
+import fr.eternom.eterSuccess.module.achievement.SuccessRanking;
 import fr.eternom.eterSuccess.module.achievement.SuccessService;
 import fr.eternom.eterSuccess.module.achievement.SuccessStore;
 import org.bukkit.plugin.ServicePriority;
@@ -23,7 +25,7 @@ import java.util.List;
 public final class Main extends JavaPlugin {
 
     /** PlacedBlocks (blocs posés par un joueur) depuis 1.11.0, RankingSource (classement des points) depuis 1.12.0. */
-    private static final String REQUIRED_ETERLIB = "1.12.0";
+    private static final String REQUIRED_ETERLIB = "1.14.0";
     private static final String TABLE_PREFIX = "etersuccess_";
 
     private Messages messages;
@@ -49,8 +51,8 @@ public final class Main extends JavaPlugin {
         getLogger().info(success.count() + " succès chargés (" + success.total() + " niveaux)");
         getServer().getServicesManager().register(SuccessApi.class, new SuccessApiService(store, success), this, ServicePriority.Normal);
         // Classement des points, lu par EterReward sans qu'il dépende d'EterSuccess (EterLib RankingSource)
-        getServer().getServicesManager().register(fr.eternom.eterLib.helper.ranking.RankingSource.class,
-                new fr.eternom.eterSuccess.module.achievement.SuccessRanking(store), this, ServicePriority.Normal);
+        getServer().getServicesManager().register(RankingSource.class,
+                new SuccessRanking(store), this, ServicePriority.Normal);
 
         new Commands(this);
         new Events(this);

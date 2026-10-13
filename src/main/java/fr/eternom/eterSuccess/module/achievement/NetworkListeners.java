@@ -1,7 +1,9 @@
 package fr.eternom.eterSuccess.module.achievement;
 
+import fr.eternom.eterMarket.api.AuctionSaleEvent;
 import fr.eternom.eterMarket.api.JobQuestCompleteEvent;
 import fr.eternom.eterReward.api.ChallengeCompleteEvent;
+import fr.eternom.eterReward.api.DailyClaimEvent;
 import fr.eternom.eterSuccess.module.achievement.Achievement.Kind;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,7 +42,7 @@ public final class NetworkListeners {
         }
 
         @EventHandler
-        public void onSale(fr.eternom.eterMarket.api.AuctionSaleEvent event) {
+        public void onSale(AuctionSaleEvent event) {
             success.countUuid(event.getSeller(), Kind.SELL, 1);
             success.countUuid(event.getBuyer(), Kind.BUY, 1);
         }
@@ -56,7 +58,7 @@ public final class NetworkListeners {
         }
 
         @EventHandler
-        public void onDaily(fr.eternom.eterReward.api.DailyClaimEvent event) {
+        public void onDaily(DailyClaimEvent event) {
             if (event.getDay() >= 7) {
                 success.countUuid(event.getPlayer().getUniqueId(), Kind.DAILY_SERIES, 1);
             }

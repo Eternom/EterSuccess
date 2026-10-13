@@ -6,7 +6,7 @@ pierres). Document développeur, à tenir à jour avec le code.
 
 ## Prérequis
 
-- **EterLib 1.12.0+** (`depend`) : base, langues, menus, `RankingSource` et `PlacedBlocks` (seuls les blocs naturels comptent).
+- **EterLib 1.14.0+** (`depend`) : base, langues, menus, `Numbers`, `RankingSource` et `PlacedBlocks` (seuls les blocs naturels comptent).
 - **EterEconomy** (`depend`, son API `EconomyApi`) : l'argent des récompenses, et l'état « argent ».
 - Facultatifs (`softdepend`), chacun lu dans sa propre classe, chargée seulement s'il est là (`States`, `NetworkListeners`) :
   - **EterMarket 1.5.0+** : `JobQuestCompleteEvent` (succès de quêtes) et l'état « métier » (`MarketApi`) ;

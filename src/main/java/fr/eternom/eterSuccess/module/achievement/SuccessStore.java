@@ -3,6 +3,7 @@ package fr.eternom.eterSuccess.module.achievement;
 import fr.eternom.eterLib.helper.sql.Column;
 import fr.eternom.eterLib.helper.sql.Database;
 import fr.eternom.eterLib.helper.sql.Row;
+import fr.eternom.eterSuccess.api.SuccessApi;
 
 import java.util.HashMap;
 import java.util.List;
@@ -79,10 +80,10 @@ public class SuccessStore {
     }
 
     /** Classement des points (somme des niveaux débloqués de chaque joueur). */
-    public List<fr.eternom.eterSuccess.api.SuccessApi.Ranked> top(int limit) {
+    public List<SuccessApi.Ranked> top(int limit) {
         return database.query("SELECT uuid, SUM(points) AS total FROM " + database.table(TIERS)
                         + " GROUP BY uuid ORDER BY total DESC LIMIT ?", limit).stream()
-                .map(row -> new fr.eternom.eterSuccess.api.SuccessApi.Ranked(row.getUUID("uuid"), row.getLong("total")))
+                .map(row -> new SuccessApi.Ranked(row.getUUID("uuid"), row.getLong("total")))
                 .toList();
     }
 

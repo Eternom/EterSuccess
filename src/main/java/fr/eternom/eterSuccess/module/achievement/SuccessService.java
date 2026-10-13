@@ -1,9 +1,11 @@
 package fr.eternom.eterSuccess.module.achievement;
 
 import fr.eternom.eterEconomy.api.EconomyApi;
+import fr.eternom.eterLib.EterLib;
 import fr.eternom.eterLib.helper.economy.Money;
 import fr.eternom.eterLib.helper.gui.BackButton;
 import fr.eternom.eterLib.helper.message.Messages;
+import fr.eternom.eterLib.helper.message.Numbers;
 import fr.eternom.eterLib.helper.task.Tasks;
 import fr.eternom.eterSuccess.api.AchievementUnlockEvent;
 import fr.eternom.eterSuccess.module.achievement.Achievement.Kind;
@@ -29,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -292,7 +295,7 @@ public class SuccessService {
                 String format = messages.raw(player, "sidebar.points");
                 value = format == null ? "" : format.replace("<points>", String.valueOf(points));
             }
-            fr.eternom.eterLib.EterLib.get().getPlayerTags().set(player, "success", value);
+            EterLib.get().getPlayerTags().set(player, "success", value);
         }, () -> { });
     }
 
@@ -310,7 +313,7 @@ public class SuccessService {
         load(player, view -> player.openInventory(new CategoryMenu(this, player, view, category, page).getInventory()));
     }
 
-    private void load(Player player, java.util.function.Consumer<View> then) {
+    private void load(Player player, Consumer<View> then) {
         UUID uuid = player.getUniqueId();
         Tasks.async(plugin, player, () -> {
             flush(uuid); // les dernières actions comptent dans ce qu'on montre
@@ -353,16 +356,11 @@ public class SuccessService {
         String raw = messages.raw(viewer, "description." + achievement.id());
         String key = raw != null ? "description." + achievement.id() : "kind." + achievement.kind().name().toLowerCase();
         return messages.render(raw(viewer, key), TagResolver.resolver(Placeholder.component("subject", subject(viewer, achievement))),
-                "target", formatNumber(target));
+                "target", Numbers.format(target));
     }
 
     static String roman(int tier) {
         return tier >= 1 && tier <= ROMAN.length ? ROMAN[tier - 1] : String.valueOf(tier);
-    }
-
-    /** 1 234 567 */
-    static String formatNumber(long value) {
-        return String.format(java.util.Locale.FRANCE, "%,d", value).replace(' ', ' ').replace(' ', ' ');
     }
 
     List<Category> categories() {

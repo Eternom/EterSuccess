@@ -3,6 +3,7 @@ package fr.eternom.eterSuccess.module.achievement;
 import fr.eternom.eterSuccess.api.SuccessApi;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.UUID;
 
 /** L'API d'EterSuccess (SuccessApi.get()). */
@@ -27,7 +28,7 @@ public class SuccessApiService implements SuccessApi {
     }
 
     @Override
-    public java.util.List<Ranked> top(int limit) {
+    public List<Ranked> top(int limit) {
         return store.top(limit);
     }
 
