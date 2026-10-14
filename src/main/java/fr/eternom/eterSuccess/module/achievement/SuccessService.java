@@ -287,7 +287,8 @@ public class SuccessService {
                 long done = steps.stream().filter(step -> known.getOrDefault(step.id(), 0) > 0).count();
                 if (done < steps.size()) {
                     String format = messages.raw(player, "sidebar.step");
-                    value = format == null ? null : format.replace("<step>", String.valueOf(done + 1))
+                    value = format == null ? null : format.replace("<done>", String.valueOf(done))
+                            .replace("<step>", String.valueOf(done)) // ancien nom, encore dans les lang/ déjà copiés
                             .replace("<steps>", String.valueOf(steps.size()));
                 }
             }

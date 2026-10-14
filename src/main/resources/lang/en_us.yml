@@ -128,5 +128,5 @@ kind:
 
 # Sidebar line (EterTab, <tag_success>): the First steps step until done, then the points
 sidebar:
-  step: "  <info>First steps <accent><step></accent><info>/<steps>"
+  step: "  <info>First steps <accent><done></accent><info>/<steps>"
   points: "  <info>Achievements <accent><points></accent> <info>pts"

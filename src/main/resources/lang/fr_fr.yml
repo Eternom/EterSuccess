@@ -130,7 +130,7 @@ kind:
   daily_series: "<info><subject> : finir <accent><target></accent> séries de 7 jours (/daily)"
   clan_land: "<info><subject> : un clan de <accent><target></accent> chunks"
 
-# Ligne de la sidebar (EterTab, <tag_success>) : l'étape des Premiers pas tant qu'ils ne sont pas finis, puis les points
+# Ligne de la sidebar (EterTab, <tag_success>) : les étapes des Premiers pas réussies (<done>) tant qu'ils ne sont pas finis, puis les points
 sidebar:
-  step: "  <info>Premiers pas <accent><step></accent><info>/<steps>"
+  step: "  <info>Premiers pas <accent><done></accent><info>/<steps>"
   points: "  <info>Succès <accent><points></accent> <info>pts"
