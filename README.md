@@ -35,7 +35,7 @@ Chaque action s'ajoute en mémoire (`compute` atomique avec la vidange), puis pa
 
 **Débloquer** (`SuccessService#check`) : chaque niveau atteint est inscrit par `INSERT IGNORE` dans `etersuccess_tiers` :
 récompense donnée une seule fois, même avec plusieurs serveurs. L'argent part tout de suite en tâche de fond, puis les
-commandes, le message et le son sur le thread principal. Le niveau V d'un succès est annoncé à tout le serveur. Événement
+commandes, le message et le son sur le thread principal. Chaque niveau débloqué (sauf les étapes des Premiers pas) est annoncé à tous, à la place des progrès de Minecraft : `announce` (`network` par le bus `etersuccess`, type `unlock`, `server` ou `none`) ; le niveau V a son message (`unlock.legend`). Événement
 `AchievementUnlockEvent` pour les autres plugins.
 
 **Premiers pas** (catégorie `guided`) : 9 étapes (métier, home, `/daily`, quête, monde ressource, défi, 1 000 Heloks, clan,

@@ -7,7 +7,9 @@
 unlock:
   message: "<info>Succès débloqué : <accent><name></accent> ! <accent>+<money></accent>, <accent>+<points> points</accent>."
   step: "<success>Étape réussie :</success> <accent><name></accent> ! <accent>+<money></accent>."
-  legend: "<accent><player></accent> <info>atteint le niveau <accent>V</accent> du succès <accent><name></accent> !"
+  # Annonce publique (config.yml > announce), à la place des progrès de Minecraft ; legend : le niveau V
+  public: "<accent><player></accent> <info>a débloqué le succès <success>[<name>]"
+  legend: "<accent><player></accent> <info>atteint le niveau <accent>V</accent> du succès <success>[<name>]</success><info> !"
 
 guide:
   next: "<info>Premiers pas <dark_gray>(<step>/<steps>)</dark_gray> : <accent><hint></accent> <dark_gray>· tout le serveur est dans /menu"

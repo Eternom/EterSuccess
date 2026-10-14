@@ -3,6 +3,8 @@ package fr.eternom.eterSuccess.module.achievement;
 import fr.eternom.eterEconomy.api.EconomyApi;
 import fr.eternom.eterLib.EterLib;
 import fr.eternom.eterLib.helper.economy.Money;
+import com.google.gson.JsonObject;
+import fr.eternom.eterLib.helper.cache.NetworkBus;
 import fr.eternom.eterLib.helper.gui.BackButton;
 import fr.eternom.eterLib.helper.message.Messages;
 import fr.eternom.eterLib.helper.message.Numbers;
@@ -28,6 +30,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,6 +48,7 @@ public class SuccessService {
 
     public static final String PERMISSION = "etersuccess.use";
     private static final String[] ROMAN = {"I", "II", "III", "IV", "V"};
+    private static final String UNLOCK = "unlock";
 
     private final JavaPlugin plugin;
     private final SuccessStore store;
@@ -58,7 +62,15 @@ public class SuccessService {
     /** Plus haut niveau débloqué de chaque succès, pour les joueurs connectés (évite les requêtes inutiles). */
     private final Map<UUID, Map<String, Integer>> unlocked = new ConcurrentHashMap<>();
 
-    public SuccessService(JavaPlugin plugin, SuccessStore store, List<Category> categories, Messages messages, BackButton backButton) {
+    /** Annonce publique d'un succès débloqué (à la place des progrès de Minecraft) : network, server ou none. */
+    private final String announce;
+    private final NetworkBus bus;
+
+    public SuccessService(JavaPlugin plugin, SuccessStore store, List<Category> categories, Messages messages, BackButton backButton,
+                          NetworkBus bus, String announce) {
+        this.bus = bus;
+        this.announce = announce.toLowerCase(Locale.ROOT);
+        bus.on(UNLOCK, this::announce);
         this.plugin = plugin;
         this.store = store;
         this.categories = categories;
@@ -203,11 +215,15 @@ public class SuccessService {
                     TagResolver.resolver(Placeholder.component("name", fullName(player, achievement, tier))),
                     "money", Money.format(reward.money()), "points", String.valueOf(reward.points()))));
             player.playSound(player, tier >= 5 ? Sound.UI_TOAST_CHALLENGE_COMPLETE : Sound.ENTITY_PLAYER_LEVELUP, 0.8f, 1.2f);
-            if (tier >= 5 && achievement.tiers().length >= 5) {
-                Component announce = messages.prefix().append(messages.render(raw(player, "unlock.legend"),
-                        TagResolver.resolver(Placeholder.component("name", fullName(player, achievement, tier))),
-                        "player", player.getName()));
-                Bukkit.getOnlinePlayers().forEach(online -> online.sendMessage(announce));
+            if (!guided && !announce.equals("none") && !EterLib.get().getVanish().isVanished(uuid)) {
+                JsonObject data = new JsonObject();
+                data.addProperty("player", player.getName());
+                data.addProperty("achievement", achievement.id());
+                data.addProperty("tier", tier);
+                announce(data);
+                if (announce.equals("network")) {
+                    bus.publish(UNLOCK, data);
+                }
             }
             Bukkit.getPluginManager().callEvent(new AchievementUnlockEvent(player, achievement.id(), tier, reward.points()));
             if (guided) {
@@ -215,6 +231,21 @@ public class SuccessService {
             }
             publishTag(player);
         });
+    }
+
+    /** Annonce publique aux joueurs de ce serveur, chacun dans sa langue ; le niveau V a son propre message. */
+    private void announce(JsonObject data) {
+        Achievement achievement = byId.get(data.get("achievement").getAsString());
+        if (achievement == null) {
+            return; // succès absent de la config de ce serveur
+        }
+        int tier = data.get("tier").getAsInt();
+        String key = tier >= 5 && achievement.tiers().length >= 5 ? "unlock.legend" : "unlock.public";
+        for (Player receiver : Bukkit.getOnlinePlayers()) {
+            receiver.sendMessage(messages.render(raw(receiver, key),
+                    TagResolver.resolver(Placeholder.component("name", fullName(receiver, achievement, tier))),
+                    "player", data.get("player").getAsString()));
+        }
     }
 
     // ---------- Arrivée, départ, Premiers pas ----------

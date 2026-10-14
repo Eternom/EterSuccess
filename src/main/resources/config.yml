@@ -32,3 +32,7 @@ tiers:
 # vide, il ferme le menu.
 menus:
   back-command: "menu progression"
+
+# Annonce publique de chaque succès débloqué (les étapes des Premiers pas restent privées), à la place des progrès de
+# Minecraft (retirés par EterSync) : network (tout le réseau), server (ce serveur) ou none.
+announce: network

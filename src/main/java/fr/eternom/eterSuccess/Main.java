@@ -47,7 +47,8 @@ public final class Main extends JavaPlugin {
         messages = lib.messages(this, "en_us", "fr_fr");
         SuccessStore store = new SuccessStore(lib.database(TABLE_PREFIX));
         success = new SuccessService(this, store, AchievementCatalog.load(this, tierRewards()), messages,
-                lib.backButton(getConfig().getString("menus.back-command", "")));
+                lib.backButton(getConfig().getString("menus.back-command", "")),
+                lib.network(this, "etersuccess", messages), getConfig().getString("announce", "network"));
         getLogger().info(success.count() + " succès chargés (" + success.total() + " niveaux)");
         getServer().getServicesManager().register(SuccessApi.class, new SuccessApiService(store, success), this, ServicePriority.Normal);
         // Classement des points, lu par EterReward sans qu'il dépende d'EterSuccess (EterLib RankingSource)
