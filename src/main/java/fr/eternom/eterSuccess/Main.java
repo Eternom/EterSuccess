@@ -12,6 +12,7 @@ import fr.eternom.eterSuccess.module.achievement.SuccessApiService;
 import fr.eternom.eterSuccess.module.achievement.SuccessRanking;
 import fr.eternom.eterSuccess.module.achievement.SuccessService;
 import fr.eternom.eterSuccess.module.achievement.SuccessStore;
+import fr.eternom.eterSuccess.module.stats.PlaytimeSource;
 import fr.eternom.eterSuccess.module.stats.StatService;
 import fr.eternom.eterSuccess.module.stats.StatStore;
 import org.bukkit.plugin.ServicePriority;
@@ -52,8 +53,11 @@ public final class Main extends JavaPlugin {
         success = new SuccessService(this, store, AchievementCatalog.load(this, tierRewards()), messages,
                 lib.backButton(getConfig().getString("menus.back-command", "")),
                 lib.network(this, "etersuccess", messages), getConfig().getString("announce", "network"));
-        stats = new StatService(this, new StatStore(lib.database(TABLE_PREFIX)), lib.getPlayers(), messages,
+        StatStore statStore = new StatStore(lib.database(TABLE_PREFIX));
+        stats = new StatService(this, statStore, lib.getPlayers(), messages,
                 lib.backButton(getConfig().getString("menus.back-command", "")));
+        // Temps de jeu total, lu par EterMarket et EterClan sans dépendre d'EterSuccess (EterLib RankingSource)
+        getServer().getServicesManager().register(RankingSource.class, new PlaytimeSource(stats, statStore), this, ServicePriority.Normal);
         getLogger().info(success.count() + " succès chargés (" + success.total() + " niveaux)");
         getServer().getServicesManager().register(SuccessApi.class, new SuccessApiService(store, success, stats), this, ServicePriority.Normal);
         // Classement des points, lu par EterReward sans qu'il dépende d'EterSuccess (EterLib RankingSource)

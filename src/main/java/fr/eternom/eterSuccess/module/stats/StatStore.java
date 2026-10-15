@@ -55,6 +55,12 @@ public class StatStore {
         return database.getFirst(TABLE, Map.of("uuid", player, "stat", stat.id())).map(row -> row.getLong("amount")).orElse(0L);
     }
 
+    /** Place d'un joueur qui a ce temps de jeu (1 = premier). */
+    public long rankOf(long playtime) {
+        return database.query("SELECT COUNT(*) AS above FROM " + database.table(TABLE) + " WHERE stat = ? AND amount > ?",
+                Stat.PLAYTIME.id(), playtime).getFirst().getLong("above") + 1;
+    }
+
     public int players() {
         return database.query("SELECT COUNT(*) AS total FROM " + database.table(TABLE) + " WHERE stat = ?", Stat.PLAYTIME.id())
                 .getFirst().getInt("total");

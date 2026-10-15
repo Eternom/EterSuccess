@@ -81,6 +81,6 @@ récolte). `/stats <joueur>` ouvre directement sa fiche, même hors ligne. Bouto
 
 `fr.eternom.eterSuccess.api.SuccessApi` (`SuccessApi.get()`) : personne d'autre ne lit les tables `etersuccess_*`.
 
-- `points(uuid)`, `tier(uuid, succès)`, `top(n)`, `rank(uuid)`, `playtimeMinutes(uuid)` (temps de jeu actif total, `/stats`) (bloquants) ; `openMenu(joueur)` : le menu `/succes` ;
+- `points(uuid)`, `tier(uuid, succès)`, `top(n)`, `rank(uuid)`, `playtimeMinutes(uuid)` (temps de jeu actif total, `/stats`) (bloquants) ; aussi en source de classement `playtime_total` (EterLib `RankingSource`, minutes) pour les plugins qu'EterSuccess écoute déjà (EterMarket, EterClan : pas de cycle de dépendances) ; `openMenu(joueur)` : le menu `/succes` ;
 - source de classement `success` (EterLib `RankingSource`) : les points, pour `/classement` d'EterReward ;
 - événement `AchievementUnlockEvent` (joueur, succès, niveau, points).
