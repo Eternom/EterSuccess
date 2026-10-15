@@ -79,6 +79,9 @@ public final class Main extends JavaPlugin {
     /** Tout ce qui n'est pas encore enregistré, avant l'arrêt. */
     @Override
     public void onDisable() {
+        if (success != null) {
+            success.stop();
+        }
         if (stats != null) {
             stats.flushAllNow();
         }

@@ -132,6 +132,11 @@ public class SuccessService {
         count(player, kind, achievement -> achievement.matchesTag(tag), 1);
     }
 
+    /** À l'arrêt du serveur, sur le thread principal : la progression en mémoire est enregistrée, rien ne se perd. */
+    public void stop() {
+        flushAll();
+    }
+
     private void flushAll() {
         for (UUID uuid : List.copyOf(pending.keySet())) {
             flush(uuid);
