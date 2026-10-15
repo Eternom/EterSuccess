@@ -6,7 +6,7 @@ pierres). Document développeur, à tenir à jour avec le code.
 
 ## Prérequis
 
-- **EterLib 1.14.0+** (`depend`) : base, langues, menus, `Numbers`, `RankingSource` et `PlacedBlocks` (seuls les blocs naturels comptent).
+- **EterLib 1.16.0+** (`depend`) : base, langues, menus, `Numbers`, `RankingSource` et `PlacedBlocks` (seuls les blocs naturels comptent).
 - **EterEconomy** (`depend`, son API `EconomyApi`) : l'argent des récompenses, et l'état « argent ».
 - Facultatifs (`softdepend`), chacun lu dans sa propre classe, chargée seulement s'il est là (`States`, `NetworkListeners`) :
   - **EterMarket 1.5.0+** : `JobQuestCompleteEvent` (succès de quêtes) et l'état « métier » (`MarketApi`) ;
@@ -50,11 +50,24 @@ page : étoiles du niveau, description et barre d'avancée vers le prochain nive
 pas). Le nom d'un succès est celui du bloc ou de la créature, **traduit par le jeu dans la langue du joueur**, sinon
 `name.<id>` ou `subject.<sujet>` ; sa description vient de `kind.<kind>`.
 
+## Statistiques (`/stats`)
+
+`module/stats` : des compteurs de toujours, communs au réseau, alimentés par les mêmes événements que les succès
+(`SuccessListener`, mêmes règles : survie, blocs naturels, cultures mûres) : morts, joueurs tués (pas soi-même), monstres
+tués (`Enemy`), blocs minés, cultures, prises de pêche, animaux élevés, et le **temps de jeu actif** : une minute ne
+compte que si le joueur a tourné la tête ou parlé (un courant d'eau ou un wagonnet en boucle déplace sans faire
+regarder : l'AFK ne compte pas). Comptés en mémoire, enregistrés toutes les 20 s, au départ du joueur et à l'arrêt.
+`/stats` : tous les joueurs venus un jour, du plus grand temps de jeu au plus petit (28 par page, têtes avec skin) ; un clic
+ouvre la fiche (temps de jeu, première venue lue dans l'annuaire d'EterLib, combat avec le ratio joueurs tués / morts,
+récolte). `/stats <joueur>` ouvre directement sa fiche, même hors ligne. Bouton « Statistiques » dans `/classement`
+(EterReward 1.9.1+).
+
 ## Commandes et permissions
 
 | Commande | Permission | Par défaut |
 |---|---|---|
 | `/succes` (`success`, `achievements`) | `etersuccess.use` | tous |
+| `/stats [joueur]` (`statistiques`) | `etersuccess.stats` | tous |
 
 `etersuccess.admin` regroupe tout.
 
@@ -62,6 +75,7 @@ pas). Le nom d'un succès est celui du bloc ou de la créature, **traduit par le
 
 - `etersuccess_progress` : `uuid`, `achievement`, `amount` (compteur, ou plus haute valeur vue pour un état).
 - `etersuccess_tiers` : `uuid`, `achievement`, `tier`, `points`, `unlocked_at` (clé : les trois premiers).
+- `etersuccess_stats` : `uuid`, `stat`, `amount` (statistiques de toujours, voir `Stat`).
 
 ## API (pour les autres plugins)
 

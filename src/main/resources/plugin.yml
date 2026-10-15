@@ -17,13 +17,22 @@ commands:
     usage: /succes
     aliases: [success, achievements]
     permission: etersuccess.use
+  stats:
+    description: Les statistiques de toujours de tous les joueurs (morts, kills, récolte, temps de jeu).
+    usage: /stats [joueur]
+    aliases: [statistiques]
+    permission: etersuccess.stats
 
 permissions:
   etersuccess.use:
     description: Voir ses succès.
+    default: true
+  etersuccess.stats:
+    description: Voir les statistiques des joueurs.
     default: true
   etersuccess.admin:
     description: Toutes les permissions d'EterSuccess.
     default: op
     children:
       etersuccess.use: true
+      etersuccess.stats: true

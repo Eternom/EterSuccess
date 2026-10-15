@@ -132,3 +132,31 @@ kind:
 sidebar:
   step: "  <info>First steps <accent><done></accent><info>/<steps>"
   points: "  <info>Achievements <accent><points></accent> <info>pts"
+
+# /stats: every player's all-time statistics
+stats:
+  list:
+    title: "<primary>Statistics <dark_gray>· <page>/<pages>"
+    mine: "<accent>My stats"
+    mine-lore: "<info>Your all-time statistics."
+    player: "<accent><place>. <player>"
+    playtime: "<dark_gray>▸ <info>Playtime: <accent><time>"
+    open: "<accent>Click <dark_gray>· <info>see the stats"
+    previous: "<accent>« Previous page"
+    next: "<accent>Next page »"
+  sheet:
+    title: "<primary>Statistics <dark_gray>·</dark_gray> <player>"
+    player: "<accent><player>"
+    playtime: "<dark_gray>▸ <info>Active playtime: <accent><time>"
+    since: "<dark_gray>▸ <info>Playing since <accent><date>"
+    value: "<dark_gray>▸ <accent><value>"
+    ratio: "<dark_gray>▸ <info>Player kills / deaths ratio: <accent><ratio>"
+  stat:
+    playtime: "<primary>Playtime"
+    deaths: "<primary>Deaths"
+    player_kills: "<primary>Player kills"
+    mob_kills: "<primary>Monsters killed"
+    blocks_mined: "<primary>Blocks mined"
+    crops: "<primary>Crops harvested"
+    fish: "<primary>Fishing catches"
+    bred: "<primary>Animals bred"

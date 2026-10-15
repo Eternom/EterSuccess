@@ -1,6 +1,7 @@
 package fr.eternom.eterSuccess.listeners;
 
 import fr.eternom.eterSuccess.Main;
+import fr.eternom.eterSuccess.module.stats.StatsCommand;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
@@ -20,5 +21,10 @@ public class Commands {
             return true;
         });
         success.setTabCompleter((sender, command, label, args) -> List.of());
+
+        StatsCommand stats = new StatsCommand(main.getStats());
+        PluginCommand statsCommand = Objects.requireNonNull(main.getCommand("stats"), "Commande absente du plugin.yml : stats");
+        statsCommand.setExecutor(stats);
+        statsCommand.setTabCompleter(stats);
     }
 }

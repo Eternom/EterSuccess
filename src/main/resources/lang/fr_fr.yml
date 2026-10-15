@@ -136,3 +136,31 @@ kind:
 sidebar:
   step: "  <info>Premiers pas <accent><done></accent><info>/<steps>"
   points: "  <info>Succès <accent><points></accent> <info>pts"
+
+# /stats : les statistiques de toujours de tous les joueurs
+stats:
+  list:
+    title: "<primary>Statistiques <dark_gray>· <page>/<pages>"
+    mine: "<accent>Ma fiche"
+    mine-lore: "<info>Tes statistiques depuis toujours."
+    player: "<accent><place>. <player>"
+    playtime: "<dark_gray>▸ <info>Temps de jeu : <accent><time>"
+    open: "<accent>Clic <dark_gray>· <info>voir la fiche"
+    previous: "<accent>« Page précédente"
+    next: "<accent>Page suivante »"
+  sheet:
+    title: "<primary>Statistiques <dark_gray>·</dark_gray> <player>"
+    player: "<accent><player>"
+    playtime: "<dark_gray>▸ <info>Temps de jeu actif : <accent><time>"
+    since: "<dark_gray>▸ <info>Sur le serveur depuis le <accent><date>"
+    value: "<dark_gray>▸ <accent><value>"
+    ratio: "<dark_gray>▸ <info>Ratio joueurs tués / morts : <accent><ratio>"
+  stat:
+    playtime: "<primary>Temps de jeu"
+    deaths: "<primary>Morts"
+    player_kills: "<primary>Joueurs tués"
+    mob_kills: "<primary>Monstres tués"
+    blocks_mined: "<primary>Blocs minés"
+    crops: "<primary>Cultures récoltées"
+    fish: "<primary>Prises de pêche"
+    bred: "<primary>Animaux élevés"

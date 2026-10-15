@@ -12,6 +12,8 @@ import fr.eternom.eterSuccess.module.achievement.SuccessApiService;
 import fr.eternom.eterSuccess.module.achievement.SuccessRanking;
 import fr.eternom.eterSuccess.module.achievement.SuccessService;
 import fr.eternom.eterSuccess.module.achievement.SuccessStore;
+import fr.eternom.eterSuccess.module.stats.StatService;
+import fr.eternom.eterSuccess.module.stats.StatStore;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,11 +27,12 @@ import java.util.List;
 public final class Main extends JavaPlugin {
 
     /** PlacedBlocks (blocs posés par un joueur) depuis 1.11.0, RankingSource (classement des points) depuis 1.12.0. */
-    private static final String REQUIRED_ETERLIB = "1.14.0";
+    private static final String REQUIRED_ETERLIB = "1.16.0";
     private static final String TABLE_PREFIX = "etersuccess_";
 
     private Messages messages;
     private SuccessService success;
+    private StatService stats;
 
     @Override
     public void onEnable() {
@@ -49,6 +52,8 @@ public final class Main extends JavaPlugin {
         success = new SuccessService(this, store, AchievementCatalog.load(this, tierRewards()), messages,
                 lib.backButton(getConfig().getString("menus.back-command", "")),
                 lib.network(this, "etersuccess", messages), getConfig().getString("announce", "network"));
+        stats = new StatService(this, new StatStore(lib.database(TABLE_PREFIX)), lib.getPlayers(), messages,
+                lib.backButton(getConfig().getString("menus.back-command", "")));
         getLogger().info(success.count() + " succès chargés (" + success.total() + " niveaux)");
         getServer().getServicesManager().register(SuccessApi.class, new SuccessApiService(store, success), this, ServicePriority.Normal);
         // Classement des points, lu par EterReward sans qu'il dépende d'EterSuccess (EterLib RankingSource)
@@ -69,6 +74,18 @@ public final class Main extends JavaPlugin {
                     getConfig().getStringList(path + "commands")));
         }
         return rewards;
+    }
+
+    /** Tout ce qui n'est pas encore enregistré, avant l'arrêt. */
+    @Override
+    public void onDisable() {
+        if (stats != null) {
+            stats.flushAllNow();
+        }
+    }
+
+    public StatService getStats() {
+        return stats;
     }
 
     public Messages getMessages() {

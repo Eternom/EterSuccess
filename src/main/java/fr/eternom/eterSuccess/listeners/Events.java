@@ -9,7 +9,7 @@ public class Events {
 
     public Events(Main main) {
         PluginManager plugins = main.getServer().getPluginManager();
-        plugins.registerEvents(new SuccessListener(main, main.getSuccess()), main);
+        plugins.registerEvents(new SuccessListener(main, main.getSuccess(), main.getStats()), main);
         // Événements des autres plugins : seulement s'ils sont là (leurs classes n'existent pas sinon)
         if (plugins.isPluginEnabled("EterMarket")) {
             plugins.registerEvents(new NetworkListeners.Quests(main.getSuccess()), main);

@@ -1,6 +1,8 @@
 package fr.eternom.eterSuccess.module.achievement;
 
 import fr.eternom.eterLib.EterLib;
+import fr.eternom.eterSuccess.module.stats.Stat;
+import fr.eternom.eterSuccess.module.stats.StatService;
 import fr.eternom.eterSuccess.module.achievement.Achievement.Kind;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.Bukkit;
@@ -34,6 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Ce qui fait avancer les succès. En survie seulement : un bloc posé par un joueur ne compte pas (EterLib
  * PlacedBlocks), une culture doit être mûre, une créature doit être tuée par le joueur, le temps de jeu doit être actif.
+ * Les mêmes actions alimentent les statistiques de toujours (/stats), plus les morts et les joueurs tués.
  */
 public class SuccessListener implements Listener {
 
@@ -44,17 +47,24 @@ public class SuccessListener implements Listener {
 
     private final JavaPlugin plugin;
     private final SuccessService success;
+    private final StatService stats;
     private final Map<UUID, Long> lastActive = new ConcurrentHashMap<>();
+    /** Dernier regard ou message : le temps de jeu des statistiques ne compte que les minutes où le joueur a regardé ou parlé. */
+    private final Map<UUID, Long> lastLook = new ConcurrentHashMap<>();
 
-    public SuccessListener(JavaPlugin plugin, SuccessService success) {
+    public SuccessListener(JavaPlugin plugin, SuccessService success, StatService stats) {
         this.plugin = plugin;
         this.success = success;
+        this.stats = stats;
         // Chaque minute : une minute de jeu pour ceux qui ont bougé, agi ou parlé pendant la minute
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             long since = System.currentTimeMillis() - 60_000;
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (lastActive.getOrDefault(player.getUniqueId(), 0L) >= since) {
                     success.count(player, Kind.PLAYTIME, achievement -> true, 1);
+                }
+                if (lastLook.getOrDefault(player.getUniqueId(), 0L) >= since) {
+                    stats.add(player, Stat.PLAYTIME);
                 }
             }
         }, 20 * 60, 20 * 60);
@@ -75,6 +85,8 @@ public class SuccessListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         lastActive.remove(event.getPlayer().getUniqueId());
+        lastLook.remove(event.getPlayer().getUniqueId());
+        stats.quit(event.getPlayer().getUniqueId());
         success.quit(event.getPlayer().getUniqueId());
     }
 
@@ -89,26 +101,38 @@ public class SuccessListener implements Listener {
         if (event.getBlock().getBlockData() instanceof Ageable crop && (Tag.CROPS.isTagged(type) || type == Material.NETHER_WART)) {
             if (crop.getAge() >= crop.getMaximumAge()) {
                 success.countBlock(player, Kind.HARVEST, type);
+                stats.add(player, Stat.CROPS);
             }
             return;
         }
         if (!EterLib.get().getPlacedBlocks().isPlaced(event.getBlock())) {
             success.countBlock(player, Kind.BREAK, type);
+            stats.add(player, Stat.BLOCKS_MINED);
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onKill(EntityDeathEvent event) {
         Player killer = event.getEntity().getKiller();
-        if (killer == null || killer.getGameMode() != GameMode.SURVIVAL || event.getEntity() instanceof Player) {
+        if (killer == null || killer.getGameMode() != GameMode.SURVIVAL) {
+            return;
+        }
+        if (event.getEntity() instanceof Player victim) {
+            if (victim != killer) {
+                stats.add(killer, Stat.PLAYER_KILLS);
+            }
             return;
         }
         success.countEntity(killer, Kind.KILL, event.getEntityType(), event.getEntity() instanceof Enemy);
+        if (event.getEntity() instanceof Enemy) {
+            stats.add(killer, Stat.MOB_KILLS);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onDeath(PlayerDeathEvent event) {
         success.count(event.getPlayer(), Kind.DEATH, achievement -> true, 1);
+        stats.add(event.getPlayer(), Stat.DEATHS);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -118,6 +142,7 @@ public class SuccessListener implements Listener {
         }
         Material caught = item.getItemStack().getType();
         String tag = TREASURES.contains(caught) ? "treasure" : FISHES.contains(caught) ? "fish" : "junk";
+        stats.add(event.getPlayer(), Stat.FISH);
         // tag absent (null) : toutes les prises ; sinon seulement la catégorie
         success.count(event.getPlayer(), Kind.FISH, achievement -> achievement.matchesTag(tag)
                 && (achievement.blocks().isEmpty() || achievement.blocks().contains(caught)), 1);
@@ -127,6 +152,7 @@ public class SuccessListener implements Listener {
     public void onBreed(EntityBreedEvent event) {
         if (event.getBreeder() instanceof Player player) {
             success.countEntity(player, Kind.BREED, event.getEntityType(), false);
+            stats.add(player, Stat.BRED);
         }
     }
 
@@ -142,6 +168,9 @@ public class SuccessListener implements Listener {
         if (event.hasChangedBlock() || event.hasChangedOrientation()) {
             lastActive.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
         }
+        if (event.hasChangedOrientation()) {
+            lastLook.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -152,5 +181,6 @@ public class SuccessListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChat(AsyncChatEvent event) {
         lastActive.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
+        lastLook.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
     }
 }
