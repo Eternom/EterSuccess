@@ -36,6 +36,9 @@ public interface SuccessApi {
     /** Place du joueur dans ce classement (1 = premier), 0 sans aucun succès. Bloquant (base). */
     int rank(UUID player);
 
+    /** Temps de jeu actif depuis toujours, en minutes (statistiques /stats : AFK exclu). Bloquant (base). */
+    long playtimeMinutes(UUID player);
+
     /** Le menu /succes. Thread principal. */
     void openMenu(Player player);
 }

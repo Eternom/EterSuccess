@@ -55,7 +55,7 @@ public final class Main extends JavaPlugin {
         stats = new StatService(this, new StatStore(lib.database(TABLE_PREFIX)), lib.getPlayers(), messages,
                 lib.backButton(getConfig().getString("menus.back-command", "")));
         getLogger().info(success.count() + " succès chargés (" + success.total() + " niveaux)");
-        getServer().getServicesManager().register(SuccessApi.class, new SuccessApiService(store, success), this, ServicePriority.Normal);
+        getServer().getServicesManager().register(SuccessApi.class, new SuccessApiService(store, success, stats), this, ServicePriority.Normal);
         // Classement des points, lu par EterReward sans qu'il dépende d'EterSuccess (EterLib RankingSource)
         getServer().getServicesManager().register(RankingSource.class,
                 new SuccessRanking(store), this, ServicePriority.Normal);

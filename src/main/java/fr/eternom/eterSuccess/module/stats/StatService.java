@@ -86,6 +86,11 @@ public class StatService {
         }
     }
 
+    /** Temps de jeu actif total, en minutes, ce qui n'est pas encore enregistré compris. Bloquant. */
+    public long playtimeMinutes(UUID player) {
+        return store.get(player, Stat.PLAYTIME) + pending.getOrDefault(player, Map.of()).getOrDefault(Stat.PLAYTIME, 0L);
+    }
+
     /** Bloquant. Pages comptées à partir de 0 ; une page trop loin est ramenée à la dernière. */
     Page page(int wanted) {
         int pages = Math.max(1, (store.players() + PAGE_SIZE - 1) / PAGE_SIZE);

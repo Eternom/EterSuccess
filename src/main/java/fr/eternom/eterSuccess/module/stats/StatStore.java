@@ -51,6 +51,10 @@ public class StatStore {
                 .map(row -> new Entry(row.getUUID("uuid"), row.getLong("amount"))).toList();
     }
 
+    public long get(UUID player, Stat stat) {
+        return database.getFirst(TABLE, Map.of("uuid", player, "stat", stat.id())).map(row -> row.getLong("amount")).orElse(0L);
+    }
+
     public int players() {
         return database.query("SELECT COUNT(*) AS total FROM " + database.table(TABLE) + " WHERE stat = ?", Stat.PLAYTIME.id())
                 .getFirst().getInt("total");
