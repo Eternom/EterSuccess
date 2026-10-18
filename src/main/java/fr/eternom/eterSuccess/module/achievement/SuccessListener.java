@@ -4,7 +4,8 @@ import fr.eternom.eterLib.EterLib;
 import fr.eternom.eterSuccess.module.stats.Stat;
 import fr.eternom.eterSuccess.module.stats.StatService;
 import fr.eternom.eterSuccess.module.achievement.Achievement.Kind;
-import io.papermc.paper.event.player.AsyncChatEvent;
+import fr.eternom.eterLib.EterLib;
+import fr.eternom.eterLib.module.activity.Activity;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -22,16 +23,11 @@ import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Ce qui fait avancer les succès. En survie seulement : un bloc posé par un joueur ne compte pas (EterLib
@@ -48,22 +44,21 @@ public class SuccessListener implements Listener {
     private final JavaPlugin plugin;
     private final SuccessService success;
     private final StatService stats;
-    private final Map<UUID, Long> lastActive = new ConcurrentHashMap<>();
-    /** Dernier regard ou message : le temps de jeu des statistiques ne compte que les minutes où le joueur a regardé ou parlé. */
-    private final Map<UUID, Long> lastLook = new ConcurrentHashMap<>();
 
     public SuccessListener(JavaPlugin plugin, SuccessService success, StatService stats) {
         this.plugin = plugin;
         this.success = success;
         this.stats = stats;
-        // Chaque minute : une minute de jeu pour ceux qui ont bougé, agi ou parlé pendant la minute
+        // Chaque minute : une minute de jeu pour ceux qui ont bougé, agi ou parlé pendant la minute (activité d'EterLib) ;
+        // le temps de jeu des statistiques, seulement s'ils ont aussi regardé autour d'eux ou parlé
         Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             long since = System.currentTimeMillis() - 60_000;
+            Activity activity = EterLib.get().getActivity();
             for (Player player : Bukkit.getOnlinePlayers()) {
-                if (lastActive.getOrDefault(player.getUniqueId(), 0L) >= since) {
+                if (activity.activeSince(player.getUniqueId(), since)) {
                     success.count(player, Kind.PLAYTIME, achievement -> true, 1);
                 }
-                if (lastLook.getOrDefault(player.getUniqueId(), 0L) >= since) {
+                if (activity.lookedSince(player.getUniqueId(), since)) {
                     stats.add(player, Stat.PLAYTIME);
                 }
             }
@@ -84,8 +79,6 @@ public class SuccessListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        lastActive.remove(event.getPlayer().getUniqueId());
-        lastLook.remove(event.getPlayer().getUniqueId());
         stats.quit(event.getPlayer().getUniqueId());
         success.quit(event.getPlayer().getUniqueId());
     }
@@ -159,28 +152,5 @@ public class SuccessListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEnchant(EnchantItemEvent event) {
         success.count(event.getEnchanter(), Kind.ENCHANT, achievement -> true, 1);
-    }
-
-    // ---------- Activité (temps de jeu) ----------
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onMove(PlayerMoveEvent event) {
-        if (event.hasChangedBlock() || event.hasChangedOrientation()) {
-            lastActive.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
-        }
-        if (event.hasChangedOrientation()) {
-            lastLook.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onInteract(PlayerInteractEvent event) {
-        lastActive.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onChat(AsyncChatEvent event) {
-        lastActive.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
-        lastLook.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
     }
 }

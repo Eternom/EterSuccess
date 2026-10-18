@@ -28,7 +28,7 @@ import java.util.List;
 public final class Main extends JavaPlugin {
 
     /** PlacedBlocks (blocs posés par un joueur) depuis 1.11.0, RankingSource (classement des points) depuis 1.12.0. */
-    private static final String REQUIRED_ETERLIB = "1.16.0";
+    private static final String REQUIRED_ETERLIB = "1.18.0";
     private static final String TABLE_PREFIX = "etersuccess_";
 
     private Messages messages;

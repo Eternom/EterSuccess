@@ -6,7 +6,7 @@ pierres). Document développeur, à tenir à jour avec le code.
 
 ## Prérequis
 
-- **EterLib 1.16.0+** (`depend`) : base, langues, menus, `Numbers`, `RankingSource` et `PlacedBlocks` (seuls les blocs naturels comptent).
+- **EterLib 1.18.0+** (`depend`) : base, langues, menus, `Numbers`, `RankingSource`, `PlacedBlocks` (seuls les blocs naturels comptent) et `Activity` (temps de jeu actif).
 - **EterEconomy** (`depend`, son API `EconomyApi`) : l'argent des récompenses, et l'état « argent ».
 - Facultatifs (`softdepend`), chacun lu dans sa propre classe, chargée seulement s'il est là (`States`, `NetworkListeners`) :
   - **EterMarket 1.5.0+** : `JobQuestCompleteEvent` (succès de quêtes) et l'état « métier » (`MarketApi`) ;
@@ -25,7 +25,7 @@ en ajouter, suivre le même modèle. **Ne jamais renommer un succès** : sa prog
 - `break` : blocs **naturels** seulement (un bloc posé par un joueur ne compte pas, EterLib `PlacedBlocks`) ;
 - `harvest` : cultures mûres ; `kill` : créatures tuées par le joueur (`#monsters` = les `Enemy`) ; `fish` (tag : `fish`,
   `treasure`, `junk`) ; `breed` ; `enchant` ; `death` ;
-- `playtime` : minutes où le joueur a bougé, agi ou parlé ; `resource` : arrivées sur un monde ressource ;
+- `playtime` : minutes où le joueur a bougé, agi ou parlé (activité d'EterLib, `Activity`) ; `resource` : arrivées sur un monde ressource ;
 - `quest` et `challenge` : événements d'EterMarket et d'EterReward ; `sell` et `buy` : `AuctionSaleEvent` d'EterMarket (le vendeur
   est compté par son UUID, même hors ligne) ; `daily-series` : `DailyClaimEvent` d'EterReward (jour 7).
 
