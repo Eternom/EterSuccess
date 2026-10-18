@@ -4,7 +4,6 @@ import fr.eternom.eterLib.EterLib;
 import fr.eternom.eterSuccess.module.stats.Stat;
 import fr.eternom.eterSuccess.module.stats.StatService;
 import fr.eternom.eterSuccess.module.achievement.Achievement.Kind;
-import fr.eternom.eterLib.EterLib;
 import fr.eternom.eterLib.module.activity.Activity;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;

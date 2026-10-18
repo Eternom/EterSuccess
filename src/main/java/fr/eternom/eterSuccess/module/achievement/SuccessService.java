@@ -32,6 +32,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -61,6 +62,8 @@ public class SuccessService {
     private final Map<UUID, Map<String, Long>> pending = new ConcurrentHashMap<>();
     /** Plus haut niveau débloqué de chaque succès, pour les joueurs connectés (évite les requêtes inutiles). */
     private final Map<UUID, Map<String, Integer>> unlocked = new ConcurrentHashMap<>();
+    /** États déjà signalés illisibles : une seule ligne dans la console par état (sinon une par joueur et par minute). */
+    private final Set<Kind> unreadable = ConcurrentHashMap.newKeySet();
 
     /** Annonce publique d'un succès débloqué (à la place des progrès de Minecraft) : network, server ou none. */
     private final String announce;
@@ -198,7 +201,9 @@ public class SuccessService {
                     check(uuid, achievement, store.raise(uuid, achievement.id(), value));
                 }
             } catch (RuntimeException | LinkageError e) {
-                plugin.getLogger().warning("Succès : état " + entry.getKey() + " illisible pour " + uuid + " : " + e);
+                if (unreadable.add(entry.getKey())) {
+                    plugin.getLogger().warning("Succès : état " + entry.getKey() + " illisible (" + uuid + ", signalé une fois) : " + e);
+                }
             }
         }
     }

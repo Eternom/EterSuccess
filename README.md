@@ -32,7 +32,7 @@ en ajouter, suivre le même modèle. **Ne jamais renommer un succès** : sa prog
 Chaque action s'ajoute en mémoire (`compute` atomique avec la vidange), puis part en base toutes les 20 s et au départ
 (une requête relative par succès, `SuccessStore#add`). Les **états** (`job`, `homes`, `money`, `clan`, `clan-land`
 (chunks du clan), `pass-tier`, `daily`) sont relus chaque minute pour les joueurs connectés : la plus haute valeur vue est gardée (`raise`). Chaque lecture
-(un état d'un joueur) est isolée : une erreur est écrite dans la console (« état X illisible pour <uuid> ») sans bloquer
+(un état d'un joueur) est isolée : une erreur est écrite une fois dans la console (« état X illisible ») sans bloquer
 les autres états ni les autres joueurs. Un home posé (`HomeSetEvent` d'EterHome) relit les états du joueur tout de suite :
 sans ça, un home supprimé moins d'une minute après n'était jamais vu.
 
