@@ -19,5 +19,13 @@ public class Events {
             plugins.registerEvents(new NetworkListeners.Challenges(main.getSuccess()), main);
             plugins.registerEvents(new NetworkListeners.Daily(main.getSuccess()), main);
         }
+        if (plugins.isPluginEnabled("EterHome")) {
+            try {
+                plugins.registerEvents(new NetworkListeners.Homes(main.getSuccess()), main);
+            } catch (NoClassDefFoundError e) {
+                // EterHome avant 1.3.0 (pas de HomeSetEvent) : les homes restent relus chaque minute
+                main.getLogger().warning("EterHome 1.3.0+ requis pour valider les homes tout de suite (relus chaque minute)");
+            }
+        }
     }
 }

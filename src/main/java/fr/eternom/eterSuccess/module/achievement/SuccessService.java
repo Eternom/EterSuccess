@@ -167,22 +167,40 @@ public class SuccessService {
         if (online.isEmpty()) {
             return;
         }
-        Tasks.async(plugin, () -> {
-            for (UUID uuid : online) {
-                for (Map.Entry<Kind, List<Achievement>> entry : byKind.entrySet()) {
-                    if (!entry.getKey().isState()) {
-                        continue;
-                    }
-                    long value = States.read(entry.getKey(), uuid);
-                    if (value < 0) {
-                        continue; // rien à lire ici (plugin absent)
-                    }
-                    for (Achievement achievement : entry.getValue()) {
-                        check(uuid, achievement, store.raise(uuid, achievement.id(), value));
-                    }
-                }
+        Tasks.async(plugin, () -> online.forEach(this::readStates), "Succès : lecture des états impossible");
+    }
+
+    /**
+     * Relit tout de suite les états d'un joueur connecté, sans attendre la minute (ex : un home vient d'être posé, et
+     * le joueur peut le supprimer avant la relecture suivante).
+     */
+    public void refreshStates(UUID uuid) {
+        if (unlocked.containsKey(uuid)) {
+            Tasks.async(plugin, () -> readStates(uuid), "Succès : lecture des états impossible pour " + uuid);
+        }
+    }
+
+    /**
+     * Les états d'un joueur, chacun à part : une lecture qui échoue (donnée abîmée, API d'un autre plugin qui a changé)
+     * n'empêche ni les autres états ni les autres joueurs. Bloquant.
+     */
+    private void readStates(UUID uuid) {
+        for (Map.Entry<Kind, List<Achievement>> entry : byKind.entrySet()) {
+            if (!entry.getKey().isState()) {
+                continue;
             }
-        }, "Succès : lecture des états impossible");
+            try {
+                long value = States.read(entry.getKey(), uuid);
+                if (value < 0) {
+                    continue; // rien à lire ici (plugin absent)
+                }
+                for (Achievement achievement : entry.getValue()) {
+                    check(uuid, achievement, store.raise(uuid, achievement.id(), value));
+                }
+            } catch (RuntimeException | LinkageError e) {
+                plugin.getLogger().warning("Succès : état " + entry.getKey() + " illisible pour " + uuid + " : " + e);
+            }
+        }
     }
 
     /** Débloque les niveaux atteints et pas encore débloqués. Bloquant. */
@@ -272,7 +290,15 @@ public class SuccessService {
     public void quit(UUID uuid) {
         Tasks.async(plugin, () -> {
             flush(uuid);
-            unlocked.remove(uuid);
+            // Oublié sur le thread principal, et seulement s'il n'est pas déjà revenu : une reconnexion rapide a pu
+            // recharger ses niveaux pendant l'enregistrement, ils doivent rester (sinon ses états ne sont plus relus)
+            if (plugin.isEnabled()) {
+                Bukkit.getScheduler().runTask(plugin, () -> {
+                    if (Bukkit.getPlayer(uuid) == null) {
+                        unlocked.remove(uuid);
+                    }
+                });
+            }
         }, "Succès non enregistrés pour " + uuid);
     }
 

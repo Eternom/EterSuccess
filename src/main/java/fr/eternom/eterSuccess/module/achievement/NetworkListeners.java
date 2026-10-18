@@ -1,5 +1,6 @@
 package fr.eternom.eterSuccess.module.achievement;
 
+import fr.eternom.eterHome.api.HomeSetEvent;
 import fr.eternom.eterMarket.api.AuctionSaleEvent;
 import fr.eternom.eterMarket.api.JobQuestCompleteEvent;
 import fr.eternom.eterReward.api.ChallengeCompleteEvent;
@@ -62,6 +63,21 @@ public final class NetworkListeners {
             if (event.getDay() >= 7) {
                 success.countUuid(event.getPlayer().getUniqueId(), Kind.DAILY_SERIES, 1);
             }
+        }
+    }
+
+    /** Home posé (EterHome 1.3.0+) : l'état « homes » relu tout de suite, sans attendre la minute. */
+    public static class Homes implements Listener {
+
+        private final SuccessService success;
+
+        public Homes(SuccessService success) {
+            this.success = success;
+        }
+
+        @EventHandler
+        public void onHomeSet(HomeSetEvent event) {
+            success.refreshStates(event.getPlayer().getUniqueId());
         }
     }
 

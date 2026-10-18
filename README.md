@@ -12,7 +12,7 @@ pierres). Document développeur, à tenir à jour avec le code.
   - **EterMarket 1.5.0+** : `JobQuestCompleteEvent` (succès de quêtes) et l'état « métier » (`MarketApi`) ;
   - **EterReward 1.3.0+** : `ChallengeCompleteEvent` (succès de défis), palier du pass et `/daily` (`RewardApi`) ;
   - **EterResource** : un monde ressource (arrivées) ;
-  - **EterHome** : nombre de homes ; **EterClan** : membre d'un clan.
+  - **EterHome 1.3.0+** : nombre de homes, relu aussi dès qu'un home est posé (`HomeSetEvent`) ; **EterClan** : membre d'un clan.
 
 ## Fonctionnement
 
@@ -31,7 +31,10 @@ en ajouter, suivre le même modèle. **Ne jamais renommer un succès** : sa prog
 
 Chaque action s'ajoute en mémoire (`compute` atomique avec la vidange), puis part en base toutes les 20 s et au départ
 (une requête relative par succès, `SuccessStore#add`). Les **états** (`job`, `homes`, `money`, `clan`, `clan-land`
-(chunks du clan), `pass-tier`, `daily`) sont relus chaque minute pour les joueurs connectés : la plus haute valeur vue est gardée (`raise`).
+(chunks du clan), `pass-tier`, `daily`) sont relus chaque minute pour les joueurs connectés : la plus haute valeur vue est gardée (`raise`). Chaque lecture
+(un état d'un joueur) est isolée : une erreur est écrite dans la console (« état X illisible pour <uuid> ») sans bloquer
+les autres états ni les autres joueurs. Un home posé (`HomeSetEvent` d'EterHome) relit les états du joueur tout de suite :
+sans ça, un home supprimé moins d'une minute après n'était jamais vu.
 
 **Débloquer** (`SuccessService#check`) : chaque niveau atteint est inscrit par `INSERT IGNORE` dans `etersuccess_tiers` :
 récompense donnée une seule fois, même avec plusieurs serveurs. L'argent part tout de suite en tâche de fond, puis les
