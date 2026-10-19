@@ -13,7 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.EnumSet;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -102,8 +103,10 @@ public final class AchievementCatalog {
         }
         long[] tiers = values.stream().mapToLong(Long::longValue).toArray();
 
-        Set<Material> blocks = EnumSet.noneOf(Material.class);
-        Set<EntityType> entities = EnumSet.noneOf(EntityType.class);
+        // Dans l'ordre de « match » : le premier bloc ou la première créature donne son nom au succès (subject). Set.copyOf
+        // ou un HashSet le changeraient d'un démarrage à l'autre (« Minerai de lapis-lazuli » ou « … des abîmes »).
+        Set<Material> blocks = new LinkedHashSet<>();
+        Set<EntityType> entities = new LinkedHashSet<>();
         boolean monsters = false;
         for (String entry : section.getStringList("match")) {
             String name = entry.trim().toLowerCase(Locale.ROOT);
@@ -137,7 +140,8 @@ public final class AchievementCatalog {
         }
         Material icon = Material.matchMaterial(section.getString("icon", "PAPER"));
         String tag = section.getString("tag");
-        return new Achievement(id, section.getString("category", ""), kind, Set.copyOf(blocks), Set.copyOf(entities), monsters,
+        return new Achievement(id, section.getString("category", ""), kind, Collections.unmodifiableSet(blocks),
+                Collections.unmodifiableSet(entities), monsters,
                 tag == null ? null : tag.toLowerCase(Locale.ROOT), tiers, icon == null || !icon.isItem() ? Material.PAPER : icon,
                 section.getString("subject"), List.copyOf(rewards));
     }
