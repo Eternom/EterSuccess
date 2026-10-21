@@ -62,6 +62,11 @@ public class SuccessService {
     private final Map<UUID, Map<String, Long>> pending = new ConcurrentHashMap<>();
     /** Plus haut niveau débloqué de chaque succès, pour les joueurs connectés (évite les requêtes inutiles). */
     private final Map<UUID, Map<String, Integer>> unlocked = new ConcurrentHashMap<>();
+    /**
+     * Dernière valeur enregistrée de chaque état, par joueur connecté : un état qui n'a pas monté n'est ni réécrit ni relu
+     * en base (sans ça : une écriture et une lecture par succès d'état, chaque minute, pour chaque joueur).
+     */
+    private final Map<UUID, Map<String, Long>> stateSeen = new ConcurrentHashMap<>();
     /** États déjà signalés illisibles : une seule ligne dans la console par état (sinon une par joueur et par minute). */
     private final Set<Kind> unreadable = ConcurrentHashMap.newKeySet();
 
@@ -145,6 +150,7 @@ public class SuccessService {
             flush(uuid);
             if (Bukkit.getPlayer(uuid) == null) {
                 unlocked.remove(uuid); // compté hors ligne (vendeur d'une annonce) : rien à garder en mémoire
+                stateSeen.remove(uuid);
             }
         }
     }
@@ -197,8 +203,15 @@ public class SuccessService {
                 if (value < 0) {
                     continue; // rien à lire ici (plugin absent)
                 }
+                Map<String, Long> seen = stateSeen.computeIfAbsent(uuid, key -> new ConcurrentHashMap<>());
                 for (Achievement achievement : entry.getValue()) {
-                    check(uuid, achievement, store.raise(uuid, achievement.id(), value));
+                    Long last = seen.get(achievement.id());
+                    if (last != null && value <= last) {
+                        continue; // rien de neuf depuis la dernière fois
+                    }
+                    long best = store.raise(uuid, achievement.id(), value);
+                    seen.put(achievement.id(), best);
+                    check(uuid, achievement, best);
                 }
             } catch (RuntimeException | LinkageError e) {
                 if (unreadable.add(entry.getKey())) {
@@ -301,6 +314,7 @@ public class SuccessService {
                 Bukkit.getScheduler().runTask(plugin, () -> {
                     if (Bukkit.getPlayer(uuid) == null) {
                         unlocked.remove(uuid);
+                        stateSeen.remove(uuid);
                     }
                 });
             }
