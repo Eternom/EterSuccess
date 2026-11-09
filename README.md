@@ -9,7 +9,8 @@ pierres). Document développeur, à tenir à jour avec le code.
 - **EterLib 1.18.0+** (`depend`) : base, langues, menus, `Numbers`, `RankingSource`, `PlacedBlocks` (seuls les blocs naturels comptent) et `Activity` (temps de jeu actif).
 - **EterEconomy** (`depend`, son API `EconomyApi`) : l'argent des récompenses, et l'état « argent ».
 - Facultatifs (`softdepend`), chacun lu dans sa propre classe, chargée seulement s'il est là (`States`, `NetworkListeners`) :
-  - **EterMarket 1.5.0+** : `JobQuestCompleteEvent` (succès de quêtes) et l'état « métier » (`MarketApi`) ;
+  - **EterJob 2.0.0+** : `JobQuestCompleteEvent` (succès de quêtes) et les états « métier », « niveau du métier » et
+    « métiers maîtrisés » (`JobApi`) ;
   - **EterReward 1.3.0+** : `ChallengeCompleteEvent` (succès de défis), palier du pass et `/daily` (`RewardApi`) ;
   - **EterResource** : un monde ressource (arrivées) ;
   - **EterHome 1.3.0+** : nombre de homes, relu aussi dès qu'un home est posé (`HomeSetEvent`) ; **EterClan** : membre d'un clan.
@@ -26,8 +27,8 @@ en ajouter, suivre le même modèle. **Ne jamais renommer un succès** : sa prog
 - `harvest` : cultures mûres ; `kill` : créatures tuées par le joueur (`#monsters` = les `Enemy`) ; `fish` (tag : `fish`,
   `treasure`, `junk`) ; `breed` ; `enchant` ; `death` ;
 - `playtime` : minutes où le joueur a bougé, agi ou parlé (activité d'EterLib, `Activity`) ; `resource` : arrivées sur un monde ressource ;
-- `quest` et `challenge` : événements d'EterMarket et d'EterReward ; `sell` et `buy` : `AuctionSaleEvent` d'EterMarket (le vendeur
-  est compté par son UUID, même hors ligne) ; `daily-series` : `DailyClaimEvent` d'EterReward (jour 7).
+- `quest` et `challenge` : événements d'EterJob et d'EterReward ; `job-level` et `job-masters` : états relus chez EterJob
+  (niveau du métier actuel, métiers au rang de maître) ; `daily-series` : `DailyClaimEvent` d'EterReward (jour 7).
 
 Chaque action s'ajoute en mémoire (`compute` atomique avec la vidange), puis part en base toutes les 20 s et au départ
 (une requête relative par succès, `SuccessStore#add`). Les **états** (`job`, `homes`, `money`, `clan`, `clan-land`
@@ -84,6 +85,6 @@ récolte). `/stats <joueur>` ouvre directement sa fiche, même hors ligne. Bouto
 
 `fr.eternom.eterSuccess.api.SuccessApi` (`SuccessApi.get()`) : personne d'autre ne lit les tables `etersuccess_*`.
 
-- `points(uuid)`, `tier(uuid, succès)`, `top(n)`, `rank(uuid)`, `playtimeMinutes(uuid)` (temps de jeu actif total, `/stats`) (bloquants) ; aussi en source de classement `playtime_total` (EterLib `RankingSource`, minutes) pour les plugins qu'EterSuccess écoute déjà (EterMarket, EterClan : pas de cycle de dépendances) ; `openMenu(joueur)` : le menu `/succes` ;
+- `points(uuid)`, `tier(uuid, succès)`, `top(n)`, `rank(uuid)`, `playtimeMinutes(uuid)` (temps de jeu actif total, `/stats`) (bloquants) ; aussi en source de classement `playtime_total` (EterLib `RankingSource`, minutes) pour les plugins qu'EterSuccess écoute déjà (EterJob, EterClan : pas de cycle de dépendances) ; `openMenu(joueur)` : le menu `/succes` ;
 - source de classement `success` (EterLib `RankingSource`) : les points, pour `/classement` d'EterReward ;
 - événement `AchievementUnlockEvent` (joueur, succès, niveau, points).

@@ -1,8 +1,7 @@
 package fr.eternom.eterSuccess.module.achievement;
 
 import fr.eternom.eterHome.api.HomeSetEvent;
-import fr.eternom.eterMarket.api.AuctionSaleEvent;
-import fr.eternom.eterMarket.api.JobQuestCompleteEvent;
+import fr.eternom.eterJob.api.JobQuestCompleteEvent;
 import fr.eternom.eterReward.api.ChallengeCompleteEvent;
 import fr.eternom.eterReward.api.DailyClaimEvent;
 import fr.eternom.eterSuccess.module.achievement.Achievement.Kind;
@@ -18,7 +17,7 @@ public final class NetworkListeners {
     private NetworkListeners() {
     }
 
-    /** Quêtes de métier (EterMarket) : tag = le métier. */
+    /** Quêtes de métier (EterJob) : tag = le métier. */
     public static class Quests implements Listener {
 
         private final SuccessService success;
@@ -30,22 +29,6 @@ public final class NetworkListeners {
         @EventHandler
         public void onQuest(JobQuestCompleteEvent event) {
             success.countTag(event.getPlayer(), Kind.QUEST, event.getJob());
-        }
-    }
-
-    /** Ventes de l'hôtel des ventes (EterMarket) : une vente pour le vendeur (même hors ligne), un achat pour l'acheteur. */
-    public static class Auctions implements Listener {
-
-        private final SuccessService success;
-
-        public Auctions(SuccessService success) {
-            this.success = success;
-        }
-
-        @EventHandler
-        public void onSale(AuctionSaleEvent event) {
-            success.countUuid(event.getSeller(), Kind.SELL, 1);
-            success.countUuid(event.getBuyer(), Kind.BUY, 1);
         }
     }
 

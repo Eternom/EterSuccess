@@ -29,7 +29,7 @@ dependencies {
     compileOnly("com.github.Eternom:EterEconomy:2.2.2")
     // Ce que les succès lisent ou écoutent chez les autres (softdepend, chacun dans une classe à part) :
     // quêtes de métier, défis et pass, monde ressource, homes, clan
-    compileOnly("com.github.Eternom:EterMarket:1.7.0")
+    compileOnly("com.github.Eternom:EterJob:2.0.0")
     compileOnly("com.github.Eternom:EterReward:1.5.0")
     compileOnly("com.github.Eternom:EterResource:1.1.0")
     compileOnly("com.github.Eternom:EterHome:1.3.0")

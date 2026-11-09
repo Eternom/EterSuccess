@@ -3,7 +3,7 @@ package fr.eternom.eterSuccess.module.achievement;
 import fr.eternom.eterClan.api.ClanApi;
 import fr.eternom.eterEconomy.api.EconomyApi;
 import fr.eternom.eterHome.api.HomeApi;
-import fr.eternom.eterMarket.api.MarketApi;
+import fr.eternom.eterJob.api.JobApi;
 import fr.eternom.eterResource.api.ResourceApi;
 import fr.eternom.eterReward.api.RewardApi;
 import fr.eternom.eterSuccess.module.achievement.Achievement.Kind;
@@ -22,7 +22,9 @@ final class States {
 
     static long read(Kind kind, UUID player) {
         return switch (kind) {
-            case JOB -> enabled("EterMarket") ? Market.job(player) : -1;
+            case JOB -> enabled("EterJob") ? Jobs.job(player) : -1;
+            case JOB_LEVEL -> enabled("EterJob") ? Jobs.level(player) : -1;
+            case JOB_MASTERS -> enabled("EterJob") ? Jobs.masters(player) : -1;
             case HOMES -> enabled("EterHome") ? Homes.count(player) : -1;
             case MONEY -> EconomyApi.get().map(economy -> (long) Math.floor(economy.balance(player))).orElse(-1L);
             case CLAN -> enabled("EterClan") ? Clans.member(player) : -1;
@@ -42,9 +44,19 @@ final class States {
         return Bukkit.getPluginManager().isPluginEnabled(plugin);
     }
 
-    private static final class Market {
+    private static final class Jobs {
         static long job(UUID player) {
-            return MarketApi.get().map(api -> api.job(player).isPresent() ? 1L : 0L).orElse(-1L);
+            return JobApi.get().map(api -> api.job(player).isPresent() ? 1L : 0L).orElse(-1L);
+        }
+
+        /** Niveau du métier actuel (0 sans métier). */
+        static long level(UUID player) {
+            return JobApi.get().map(api -> api.job(player).map(job -> (long) api.level(player, job)).orElse(0L)).orElse(-1L);
+        }
+
+        /** Métiers au rang de maître. */
+        static long masters(UUID player) {
+            return JobApi.get().map(api -> api.jobs().stream().filter(job -> "maitre".equals(api.rank(player, job))).count()).orElse(-1L);
         }
     }
 

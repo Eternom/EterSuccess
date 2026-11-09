@@ -7,6 +7,7 @@
 #    kind  : break (casser des blocs NATURELS : un bloc posé par un joueur ne compte pas), harvest (cultures mûres),
 #            kill, fish, breed (faire naître), enchant, death, playtime (minutes de jeu actif), resource (arrivées en
 #            monde ressource), quest (quêtes de métier), challenge (défis) ; états relus chaque minute : job, homes,
+#            job-level (niveau du métier actuel), job-masters (métiers au rang de maître),
 #            money, clan, pass-tier, daily
 #    match : blocs, créatures ou prises qui comptent (vide : tout). Groupes : #ores, #logs, #crops, #stone, #monsters
 #    tag   : quest -> le métier ; challenge -> daily ou weekly ; fish -> fish, treasure ou junk
@@ -28,7 +29,6 @@ categories:
   legendes: { icon: DRAGON_HEAD }
   metiers: { icon: WRITABLE_BOOK }
   defis: { icon: TARGET }
-  commerce: { icon: EMERALD }
   clans: { icon: WHITE_BANNER }
   richesse: { icon: GOLD_INGOT }
   aventure: { icon: COMPASS }
@@ -751,18 +751,18 @@ achievements:
     subject: deaths
     icon: SKELETON_SKULL
     tiers: [ 10, 100, 500, 1000, 5000 ]
-  commerce-ventes:
-    category: commerce
-    kind: sell
-    subject: sales
-    icon: EMERALD
-    tiers: [ 5, 50, 250, 1000, 5000 ]
-  commerce-achats:
-    category: commerce
-    kind: buy
-    subject: purchases
-    icon: GOLD_INGOT
-    tiers: [ 5, 50, 250, 1000, 5000 ]
+  metier-niveau:
+    category: metiers
+    kind: job-level
+    subject: job-level
+    icon: EXPERIENCE_BOTTLE
+    tiers: [ 5, 10, 20, 35, 50 ]
+  metier-maitres:
+    category: metiers
+    kind: job-masters
+    subject: job-masters
+    icon: NETHER_STAR
+    tiers: [ 1, 2, 3, 4, 5 ]
   clan-territoire:
     category: clans
     kind: clan-land

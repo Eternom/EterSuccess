@@ -7,7 +7,7 @@ import java.util.UUID;
 
 /**
  * Le temps de jeu actif total (minutes, /stats), offert aux autres plugins par EterLib sous l'identifiant
- * « playtime_total » : EterMarket et EterClan s'en servent pour réserver certains échanges aux joueurs qui ont assez
+ * « playtime_total » : EterJob (anti-triche) et EterClan s'en servent, pour ce qui demande d'avoir assez
  * joué, sans dépendre d'EterSuccess (qui dépend déjà d'eux : un cycle, que Paper refuse).
  */
 public class PlaytimeSource implements RankingSource {

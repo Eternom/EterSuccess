@@ -7,9 +7,9 @@ load: POSTWORLD
 authors: [ NadTum ]
 description: Succès du réseau (Premiers pas pour guider les nouveaux, puis des centaines de niveaux).
 depend: [EterLib, EterEconomy]
-# Ce que les succès lisent ou écoutent : quêtes (EterMarket), défis et pass (EterReward), monde ressource
+# Ce que les succès lisent ou écoutent : quêtes (EterJob), défis et pass (EterReward), monde ressource
 # (EterResource), homes (EterHome), clan (EterClan). Chacun est facultatif.
-softdepend: [EterMarket, EterReward, EterResource, EterHome, EterClan]
+softdepend: [EterJob, EterReward, EterResource, EterHome, EterClan]
 
 commands:
   succes:
