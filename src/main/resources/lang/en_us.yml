@@ -13,7 +13,7 @@ unlock:
 guide:
   next: "<info>First steps <dark_gray>(<step>/<steps>)</dark_gray>: <accent><hint></accent> <dark_gray>· the whole server is in /menu"
   button: "<accent><bold>[See my achievements]</bold></accent>"
-  button-hover: "<info>Open <accent>/succes"
+  button-hover: "<info>Open <accent>/achievements"
 
 menu:
   title: "<primary>Achievements"
@@ -67,8 +67,8 @@ hint:
   pp-maison: "set your home with /sethome."
   pp-recompense: "claim your reward with /daily."
   pp-quete: "do a daily quest and deliver it to your job's NPC."
-  pp-ressource: "go to a resource world with /ressource."
-  pp-defi: "complete a daily challenge (/defis)."
+  pp-ressource: "go to a resource world with /resource."
+  pp-defi: "complete a daily challenge (/challenges)."
   pp-epargne: "save up 1,000 Heloks."
   pp-clan: "join or create a clan with /clan."
   pp-pass: "reach tier 3 of the season pass (/pass)."

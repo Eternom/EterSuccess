@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Commands {
 
     public Commands(Main main) {
-        PluginCommand success = Objects.requireNonNull(main.getCommand("succes"), "Commande absente du plugin.yml : succes");
+        PluginCommand success = Objects.requireNonNull(main.getCommand("achievements"), "Commande absente du plugin.yml : achievements");
         success.setExecutor((sender, command, label, args) -> {
             if (sender instanceof Player player) {
                 main.getSuccess().open(player);

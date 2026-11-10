@@ -337,7 +337,7 @@ public class SuccessService {
                 messages.send(player, "guide.next", "step", String.valueOf(i + 1), "steps", String.valueOf(steps.size()),
                         "hint", messages.plain(player, "hint." + step.id()));
                 Component button = messages.get(player, "guide.button")
-                        .clickEvent(ClickEvent.runCommand("/succes"))
+                        .clickEvent(ClickEvent.runCommand("/achievements"))
                         .hoverEvent(HoverEvent.showText(messages.get(player, "guide.button-hover")));
                 player.sendMessage(messages.prefix().append(button));
                 return;

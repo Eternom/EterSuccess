@@ -44,12 +44,12 @@ commandes, le message et le son sur le thread principal. Chaque niveau débloqu�
 
 **Premiers pas** (catégorie `guided`) : 9 étapes (métier, home, `/daily`, quête, monde ressource, défi, 1 000 Heloks, clan,
 palier 3 du pass), chacune avec un indice (`hint.<id>`). À l'arrivée et après chaque étape, l'indice de la prochaine est
-envoyé, avec un bouton vers `/succes`. La dernière donne 2 clés de ressource (commande `eterresource givekey`).
+envoyé, avec un bouton vers `/achievements`. La dernière donne 2 clés de ressource (commande `eterresource givekey`).
 
 **Sidebar** (EterTab, étiquette `success`) : l'étape des Premiers pas tant qu'ils ne sont pas finis, puis les points de
 succès ; à l'arrivée et à chaque déblocage.
 
-**Menus** : `/succes` (le joueur avec ses points, les catégories avec leur avancée), puis une catégorie (28 succès par
+**Menus** : `/achievements` (le joueur avec ses points, les catégories avec leur avancée), puis une catégorie (28 succès par
 page : étoiles du niveau, description et barre d'avancée vers le prochain niveau, sa récompense ; indices pour Premiers
 pas). Le nom d'un succès est celui du bloc ou de la créature, **traduit par le jeu dans la langue du joueur**, sinon
 `name.<id>` ou `subject.<sujet>` ; sa description vient de `kind.<kind>`.
@@ -63,14 +63,14 @@ compte que si le joueur a tourné la tête ou parlé (un courant d'eau ou un wag
 regarder : l'AFK ne compte pas). Comptés en mémoire, enregistrés toutes les 20 s, au départ du joueur et à l'arrêt.
 `/stats` : tous les joueurs venus un jour, du plus grand temps de jeu au plus petit (28 par page, têtes avec skin) ; un clic
 ouvre la fiche (temps de jeu, première venue lue dans l'annuaire d'EterLib, combat avec le ratio joueurs tués / morts,
-récolte). `/stats <joueur>` ouvre directement sa fiche, même hors ligne. Bouton « Statistiques » dans `/classement`
+récolte). `/stats <joueur>` ouvre directement sa fiche, même hors ligne. Bouton « Statistiques » dans `/ranking`
 (EterReward 1.9.1+).
 
 ## Commandes et permissions
 
 | Commande | Permission | Par défaut |
 |---|---|---|
-| `/succes` (`success`, `achievements`) | `etersuccess.use` | tous |
+| `/achievements` (`success`, `achievements`) | `etersuccess.use` | tous |
 | `/stats [joueur]` (`statistiques`) | `etersuccess.stats` | tous |
 
 `etersuccess.admin` regroupe tout.
@@ -85,6 +85,6 @@ récolte). `/stats <joueur>` ouvre directement sa fiche, même hors ligne. Bouto
 
 `fr.eternom.eterSuccess.api.SuccessApi` (`SuccessApi.get()`) : personne d'autre ne lit les tables `etersuccess_*`.
 
-- `points(uuid)`, `tier(uuid, succès)`, `top(n)`, `rank(uuid)`, `playtimeMinutes(uuid)` (temps de jeu actif total, `/stats`) (bloquants) ; aussi en source de classement `playtime_total` (EterLib `RankingSource`, minutes) pour les plugins qu'EterSuccess écoute déjà (EterJob, EterClan : pas de cycle de dépendances) ; `openMenu(joueur)` : le menu `/succes` ;
-- source de classement `success` (EterLib `RankingSource`) : les points, pour `/classement` d'EterReward ;
+- `points(uuid)`, `tier(uuid, succès)`, `top(n)`, `rank(uuid)`, `playtimeMinutes(uuid)` (temps de jeu actif total, `/stats`) (bloquants) ; aussi en source de classement `playtime_total` (EterLib `RankingSource`, minutes) pour les plugins qu'EterSuccess écoute déjà (EterJob, EterClan : pas de cycle de dépendances) ; `openMenu(joueur)` : le menu `/achievements` ;
+- source de classement `success` (EterLib `RankingSource`) : les points, pour `/ranking` d'EterReward ;
 - événement `AchievementUnlockEvent` (joueur, succès, niveau, points).

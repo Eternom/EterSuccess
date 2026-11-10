@@ -39,6 +39,6 @@ public interface SuccessApi {
     /** Temps de jeu actif depuis toujours, en minutes (statistiques /stats : AFK exclu). Bloquant (base). */
     long playtimeMinutes(UUID player);
 
-    /** Le menu /succes. Thread principal. */
+    /** Le menu /achievements. Thread principal. */
     void openMenu(Player player);
 }

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Menu /succes, 6 lignes : le joueur (points, niveaux débloqués) en haut, les catégories au milieu (Premiers pas en
+ * Menu /achievements, 6 lignes : le joueur (points, niveaux débloqués) en haut, les catégories au milieu (Premiers pas en
  * premier), retour en bas.
  */
 class SuccessMenu implements Menu {

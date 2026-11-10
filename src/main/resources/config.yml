@@ -28,7 +28,7 @@ tiers:
     money: 3000
     points: 100
 
-# Bouton en bas du menu /succes : avec une commande (sans le /), il la lance pour le joueur (ex : "profile") ;
+# Bouton en bas du menu /achievements : avec une commande (sans le /), il la lance pour le joueur (ex : "profile") ;
 # vide, il ferme le menu.
 menus:
   back-command: "menu progression"

@@ -12,15 +12,15 @@ depend: [EterLib, EterEconomy]
 softdepend: [EterJob, EterReward, EterResource, EterHome, EterClan]
 
 commands:
-  succes:
+  achievements:
     description: Tes succès, et les étapes des Premiers pas.
-    usage: /succes
-    aliases: [success, achievements]
+    usage: /achievements
+    aliases: [success]
     permission: etersuccess.use
   stats:
     description: Les statistiques de toujours de tous les joueurs (morts, kills, récolte, temps de jeu).
     usage: /stats [joueur]
-    aliases: [statistiques]
+    aliases: [statistics]
     permission: etersuccess.stats
 
 permissions:

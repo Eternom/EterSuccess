@@ -5,7 +5,7 @@ import fr.eternom.eterLib.helper.ranking.RankingSource;
 import java.util.List;
 import java.util.UUID;
 
-/** Classement des points de succès, offert aux autres plugins (EterReward l'affiche dans /classement). */
+/** Classement des points de succès, offert aux autres plugins (EterReward l'affiche dans /ranking). */
 public class SuccessRanking implements RankingSource {
 
     private final SuccessStore store;

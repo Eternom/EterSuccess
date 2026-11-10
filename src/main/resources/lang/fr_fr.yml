@@ -14,7 +14,7 @@ unlock:
 guide:
   next: "<info>Premiers pas <dark_gray>(<step>/<steps>)</dark_gray> : <accent><hint></accent> <dark_gray>· tout le serveur est dans /menu"
   button: "<accent><bold>[Voir mes succès]</bold></accent>"
-  button-hover: "<info>Ouvrir <accent>/succes"
+  button-hover: "<info>Ouvrir <accent>/achievements"
 
 menu:
   title: "<primary>Succès"
@@ -69,8 +69,8 @@ hint:
   pp-maison: "pose ta maison avec /sethome."
   pp-recompense: "réclame ta récompense avec /daily."
   pp-quete: "fais une quête du jour et livre-la au PNJ de ton métier."
-  pp-ressource: "pars en monde ressource avec /ressource."
-  pp-defi: "réussis un défi du jour (/defis)."
+  pp-ressource: "pars en monde ressource avec /resource."
+  pp-defi: "réussis un défi du jour (/challenges)."
   pp-epargne: "mets de côté 1 000 Heloks."
   pp-clan: "rejoins ou crée un clan avec /clan."
   pp-pass: "atteins le palier 3 du pass de saison (/pass)."
