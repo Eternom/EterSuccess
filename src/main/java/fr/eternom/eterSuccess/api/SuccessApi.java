@@ -39,6 +39,11 @@ public interface SuccessApi {
     /** Temps de jeu actif depuis toujours, en minutes (statistiques /stats : AFK exclu). Bloquant (base). */
     long playtimeMinutes(UUID player);
 
+    /** La prochaine étape des Premiers pas, prête à afficher (« Premiers pas 3/9 : ... ») ; vide si tout est fait. Thread principal. */
+    default java.util.Optional<String> nextStep(org.bukkit.entity.Player player) {
+        return java.util.Optional.empty();
+    }
+
     /** Le menu /achievements. Thread principal. */
     void openMenu(Player player);
 }

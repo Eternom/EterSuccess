@@ -46,6 +46,11 @@ public class SuccessApiService implements SuccessApi {
     }
 
     @Override
+    public java.util.Optional<String> nextStep(org.bukkit.entity.Player player) {
+        return success.nextStep(player);
+    }
+
+    @Override
     public void openMenu(Player player) {
         success.open(player);
     }

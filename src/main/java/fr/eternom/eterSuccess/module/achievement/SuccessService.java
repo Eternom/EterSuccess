@@ -321,6 +321,24 @@ public class SuccessService {
         }, "Succès non enregistrés pour " + uuid);
     }
 
+    /** L'étape suivante de « Premiers pas » en une ligne (« Premiers pas 3/9 : pose ta maison... ») ; vide si tout est fait. Thread principal. */
+    public java.util.Optional<String> nextStep(Player player) {
+        Map<String, Integer> known = unlocked.getOrDefault(player.getUniqueId(), Map.of());
+        for (Category category : categories) {
+            if (!category.guided()) {
+                continue;
+            }
+            List<Achievement> steps = category.achievements();
+            for (int i = 0; i < steps.size(); i++) {
+                if (known.getOrDefault(steps.get(i).id(), 0) == 0) {
+                    return java.util.Optional.of(messages.plain(player, "guide.step", "step", String.valueOf(i + 1),
+                            "steps", String.valueOf(steps.size()), "hint", messages.plain(player, "hint." + steps.get(i).id())));
+                }
+            }
+        }
+        return java.util.Optional.empty();
+    }
+
     /** L'étape suivante de « Premiers pas », avec un bouton vers le menu ; rien si tout est fait. */
     void guide(Player player) {
         Map<String, Integer> known = unlocked.getOrDefault(player.getUniqueId(), Map.of());
