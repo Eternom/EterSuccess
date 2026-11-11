@@ -64,7 +64,7 @@ class CategoryMenu implements Menu {
         if (this.page < pages - 1) {
             inventory.setItem(NEXT, Items.item(Material.ARROW, text("menu.next"), List.of()));
         }
-        inventory.setItem(BACK, Items.item(Material.ARROW, text("menu.back"), List.of()));
+        inventory.setItem(BACK, Items.item(Material.OAK_DOOR, text("menu.back"), List.of()));
     }
 
     @Override
