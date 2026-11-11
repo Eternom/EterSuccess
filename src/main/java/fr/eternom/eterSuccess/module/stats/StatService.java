@@ -1,6 +1,7 @@
 package fr.eternom.eterSuccess.module.stats;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
+import fr.eternom.eterLib.module.player.Skins;
 import fr.eternom.eterLib.helper.gui.BackButton;
 import fr.eternom.eterLib.helper.message.Messages;
 import fr.eternom.eterLib.helper.task.Tasks;
@@ -96,7 +97,10 @@ public class StatService {
         int pages = Math.max(1, (store.players() + PAGE_SIZE - 1) / PAGE_SIZE);
         int page = Math.clamp(wanted, 0, pages - 1);
         List<Listed> listed = new ArrayList<>();
-        for (StatStore.Entry entry : store.page(page * PAGE_SIZE, PAGE_SIZE)) {
+        List<StatStore.Entry> entries = store.page(page * PAGE_SIZE, PAGE_SIZE);
+        // Les skins de la page en une fois, depuis le cache du réseau (Redis), jamais chez Mojang
+        Skins.prefetch(entries.stream().map(StatStore.Entry::player).toList());
+        for (StatStore.Entry entry : entries) {
             String name = players.get(entry.player()).map(PlayerDirectory.NetworkPlayer::name).orElse("?");
             listed.add(new Listed(entry.player(), name, profile(entry.player(), name), entry.playtime()));
         }
@@ -117,18 +121,16 @@ public class StatService {
         Map<Stat, Long> stats = store.of(player);
         // Ce qui n'est pas encore enregistré compte aussi
         pending.getOrDefault(player, Map.of()).forEach((stat, amount) -> stats.merge(stat, amount, Long::sum));
+        Skins.prefetch(List.of(player));
         return new Sheet(player, name, profile(player, name), firstSeen, stats);
     }
 
-    /** Profil avec le skin (lu chez Mojang au besoin, mis en cache par le serveur). Bloquant. */
+    /**
+     * Profil avec le skin connu du réseau (Skins d'EterLib : retenu à chaque connexion, Redis). Jamais de requête chez
+     * Mojang : ouvrir une page de 28 joueurs en faisait 28 et Mojang finissait par refuser (429).
+     */
     private static PlayerProfile profile(UUID player, String name) {
-        PlayerProfile profile = Bukkit.createProfile(player, name);
-        try {
-            profile.complete(true);
-        } catch (RuntimeException e) {
-            // pas de skin : tête par défaut
-        }
-        return profile;
+        return Skins.enrich(Bukkit.createProfile(player, name));
     }
 
     JavaPlugin plugin() {
