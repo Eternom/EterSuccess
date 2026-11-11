@@ -59,10 +59,10 @@ class CategoryMenu implements Menu {
             slot += slot % 9 == 7 ? 3 : 1; // colonnes 1 à 7
         }
         if (this.page > 0) {
-            inventory.setItem(PREVIOUS, Items.item(Material.ARROW, text("menu.previous"), List.of()));
+            inventory.setItem(PREVIOUS, Items.item(Material.ARROW, text("menu.previous"), List.of(text("menu.page-of", "page", String.valueOf(page + 1), "pages", String.valueOf(pages)))));
         }
         if (this.page < pages - 1) {
-            inventory.setItem(NEXT, Items.item(Material.ARROW, text("menu.next"), List.of()));
+            inventory.setItem(NEXT, Items.item(Material.ARROW, text("menu.next"), List.of(text("menu.page-of", "page", String.valueOf(page + 1), "pages", String.valueOf(pages)))));
         }
         inventory.setItem(BACK, Items.item(Material.OAK_DOOR, text("menu.back"), List.of()));
     }

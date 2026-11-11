@@ -26,9 +26,9 @@ public class StatListMenu implements Menu {
     private static final int MINE = 4;
     private static final int[] SLOTS = {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25,
             28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
-    private static final int PREVIOUS = 48;
+    private static final int PREVIOUS = 45;
     private static final int BACK = 49;
-    private static final int NEXT = 50;
+    private static final int NEXT = 53;
 
     private final StatService service;
     private final StatService.Page page;

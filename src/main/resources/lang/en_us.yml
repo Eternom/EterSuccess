@@ -16,6 +16,7 @@ guide:
   button-hover: "<info>Open <accent>/achievements"
 
 menu:
+  page-of: "<dark_gray>Page <page>/<pages>"
   title: "<primary>Achievements"
   player: "<accent><player>"
   points: "<dark_gray>▸ <info>Achievement points: <accent><points>"
