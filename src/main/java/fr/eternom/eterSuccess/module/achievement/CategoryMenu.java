@@ -33,6 +33,9 @@ class CategoryMenu implements Menu {
     private static final int BACK = 49;
     private static final int NEXT = 53;
     private static final int BAR = 10;
+    private static final int FILTER = 47;
+    /** Joueurs qui ne veulent voir que les succès à faire (retenu tant que le serveur tourne). */
+    private static final java.util.Set<java.util.UUID> TODO_ONLY = java.util.concurrent.ConcurrentHashMap.newKeySet();
 
     private final SuccessService service;
     private final Player viewer;
@@ -41,21 +44,29 @@ class CategoryMenu implements Menu {
     private final int page;
     private final int pages;
     private final Inventory inventory;
+    /** Index (dans la catégorie) des succès montrés : tous, ou ceux à faire. */
+    private final List<Integer> shown;
+    private final boolean todoOnly;
 
     CategoryMenu(SuccessService service, Player viewer, View view, Category category, int page) {
         this.service = service;
         this.viewer = viewer;
         this.view = view;
         this.category = category;
-        this.pages = Math.max(1, (category.achievements().size() + PER_PAGE - 1) / PER_PAGE);
+        // Filtre « À faire » : pas pour les Premiers pas, dont l'ordre est le guide
+        this.todoOnly = !category.guided() && TODO_ONLY.contains(viewer.getUniqueId());
+        this.shown = java.util.stream.IntStream.range(0, category.achievements().size())
+                .filter(i -> !todoOnly || !complete(category.achievements().get(i))).boxed().toList();
+        this.pages = Math.max(1, (shown.size() + PER_PAGE - 1) / PER_PAGE);
         this.page = Math.clamp(page, 0, pages - 1);
         this.inventory = Bukkit.createInventory(this, 54, text("menu.category-title", "category",
                 service.messages().plain(viewer, "category." + category.id())));
         Frame.draw(inventory, Material.ORANGE_STAINED_GLASS_PANE);
         List<Achievement> achievements = category.achievements();
         int slot = 10;
-        for (int i = this.page * PER_PAGE; i < achievements.size() && i < (this.page + 1) * PER_PAGE; i++) {
-            inventory.setItem(slot, item(achievements.get(i), i + 1));
+        for (int i = this.page * PER_PAGE; i < shown.size() && i < (this.page + 1) * PER_PAGE; i++) {
+            int index = shown.get(i);
+            inventory.setItem(slot, item(achievements.get(index), index + 1));
             slot += slot % 9 == 7 ? 3 : 1; // colonnes 1 à 7
         }
         if (this.page > 0) {
@@ -63,6 +74,10 @@ class CategoryMenu implements Menu {
         }
         if (this.page < pages - 1) {
             inventory.setItem(NEXT, Items.item(Material.ARROW, text("menu.next"), List.of(text("menu.page-of", "page", String.valueOf(page + 1), "pages", String.valueOf(pages)))));
+        }
+        if (!category.guided()) {
+            inventory.setItem(FILTER, Items.item(Material.HOPPER, text(todoOnly ? "menu.filter-todo" : "menu.filter-all"),
+                    List.of(text("menu.filter-lore"))));
         }
         inventory.setItem(BACK, Items.item(Material.OAK_DOOR, text("menu.back"), List.of()));
     }
@@ -72,6 +87,12 @@ class CategoryMenu implements Menu {
         if (slot == BACK) {
             Sounds.click(player);
             service.open(player);
+        } else if (slot == FILTER && !category.guided()) {
+            Sounds.click(player);
+            if (!TODO_ONLY.remove(player.getUniqueId())) {
+                TODO_ONLY.add(player.getUniqueId());
+            }
+            player.openInventory(new CategoryMenu(service, viewer, view, category, 0).getInventory());
         } else if (slot == PREVIOUS && page > 0 || slot == NEXT && page < pages - 1) {
             Sounds.page(player);
             player.openInventory(new CategoryMenu(service, viewer, view, category, page + (slot == NEXT ? 1 : -1)).getInventory());
@@ -81,6 +102,10 @@ class CategoryMenu implements Menu {
     @Override
     public Inventory getInventory() {
         return inventory;
+    }
+
+    private boolean complete(Achievement achievement) {
+        return view.tiers().getOrDefault(achievement.id(), 0) >= achievement.tiers().length;
     }
 
     private ItemStack item(Achievement achievement, int number) {

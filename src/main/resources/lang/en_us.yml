@@ -16,6 +16,9 @@ guide:
   button-hover: "<info>Open <accent>/achievements"
 
 menu:
+  filter-all: "<accent>Filter: all achievements"
+  filter-todo: "<accent>Filter: only those left to do"
+  filter-lore: "<accent>Click <dark_gray>· <info>all / only those left to do"
   page-of: "<dark_gray>Page <page>/<pages>"
   title: "<primary>Achievements"
   player: "<accent><player>"

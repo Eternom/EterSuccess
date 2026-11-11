@@ -17,6 +17,9 @@ guide:
   button-hover: "<info>Ouvrir <accent>/achievements"
 
 menu:
+  filter-all: "<accent>Filtre : tous les succès"
+  filter-todo: "<accent>Filtre : seulement ceux à faire"
+  filter-lore: "<accent>Clic <dark_gray>· <info>tous / seulement ceux à faire"
   page-of: "<dark_gray>Page <page>/<pages>"
   title: "<primary>Succès"
   player: "<accent><player>"
