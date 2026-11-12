@@ -128,6 +128,10 @@ class CategoryMenu implements Menu {
                 int filled = (int) Math.floor(BAR * (double) shown / target);
                 lore.add(text("menu.progress", "bar", "■".repeat(filled) + "□".repeat(BAR - filled),
                         "value", Numbers.format(shown), "target", Numbers.format(target)));
+                // Presque fini (80 % ou plus) : on le dit, pour donner envie de terminer
+                if (target > 1 && shown < target && shown * 5 >= target * 4) {
+                    lore.add(text("menu.almost", "left", Numbers.format(target - shown)));
+                }
             }
             Reward reward = achievement.reward(tier + 1);
             lore.add(text("menu.reward", "money", Money.format(reward.money()), "points", String.valueOf(reward.points())));

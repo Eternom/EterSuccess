@@ -6,11 +6,12 @@
 #  achievements : dans l'ordre de leur catégorie. Pour chacun :
 #    kind  : break (casser des blocs NATURELS : un bloc posé par un joueur ne compte pas), harvest (cultures mûres),
 #            kill, fish, breed (faire naître), enchant, death, playtime (minutes de jeu actif), resource (arrivées en
-#            monde ressource), quest (quêtes de métier), challenge (défis) ; états relus chaque minute : job, homes,
+#            monde ressource), quest (quêtes de métier), challenge (défis), hub (activités du village) ; états relus chaque minute : job, homes,
 #            job-level (niveau du métier actuel), job-masters (métiers au rang de maître),
 #            money, clan, pass-tier, daily
 #    match : blocs, créatures ou prises qui comptent (vide : tout). Groupes : #ores, #logs, #crops, #stone, #monsters
-#    tag   : quest -> le métier ; challenge -> daily ou weekly ; fish -> fish, treasure ou junk
+#    tag   : quest -> le métier ; challenge -> daily ou weekly ; fish -> fish, treasure ou junk ;
+#            hub (activités du village, EterHub) -> tour, discovery-complete, head, fishing, harvest
 #    tiers : de 1 à 5 niveaux (le compteur à atteindre pour chacun)
 #    subject : nom affiché (lang subject.<subject>) quand le nom du bloc ou de la créature ne suffit pas
 #    rewards : récompense de chaque niveau à la place de config.yml > tiers (money, points, commands)
@@ -32,6 +33,7 @@ categories:
   clans: { icon: WHITE_BANNER }
   richesse: { icon: GOLD_INGOT }
   aventure: { icon: COMPASS }
+  village: { icon: BELL }
 
 achievements:
   pp-metier:
@@ -781,3 +783,39 @@ achievements:
     subject: homes
     icon: RED_BED
     tiers: [ 1, 2, 3, 5, 10 ]
+  # Le village (EterHub) : catégorie ajoutée en 1.10.0, elle arrive aussi sur un serveur qui garde son ancien fichier
+  village-visite:
+    category: village
+    kind: hub
+    tag: tour
+    subject: hub-tour
+    icon: MAP
+    tiers: [ 1 ]
+  village-decouverte:
+    category: village
+    kind: hub
+    tag: discovery-complete
+    subject: hub-discovery
+    icon: COMPASS
+    tiers: [ 1 ]
+  village-tetes:
+    category: village
+    kind: hub
+    tag: head
+    subject: hub-heads
+    icon: PLAYER_HEAD
+    tiers: [ 5, 25, 50, 100, 200 ]
+  village-peche:
+    category: village
+    kind: hub
+    tag: fishing
+    subject: hub-fishing
+    icon: COD
+    tiers: [ 10, 50, 200, 1000, 5000 ]
+  village-recoltes:
+    category: village
+    kind: hub
+    tag: harvest
+    subject: hub-harvest
+    icon: WHEAT
+    tiers: [ 10, 100, 500, 2000, 10000 ]

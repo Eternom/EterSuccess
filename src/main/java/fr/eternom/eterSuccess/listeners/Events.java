@@ -18,6 +18,9 @@ public class Events {
             plugins.registerEvents(new NetworkListeners.Challenges(main.getSuccess()), main);
             plugins.registerEvents(new NetworkListeners.Daily(main.getSuccess()), main);
         }
+        if (plugins.isPluginEnabled("EterHub")) {
+            plugins.registerEvents(new NetworkListeners.Hub(main.getSuccess()), main);
+        }
         if (plugins.isPluginEnabled("EterHome")) {
             try {
                 plugins.registerEvents(new NetworkListeners.Homes(main.getSuccess()), main);

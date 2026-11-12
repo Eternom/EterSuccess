@@ -9,7 +9,7 @@ description: Succès du réseau (Premiers pas pour guider les nouveaux, puis des
 depend: [EterLib, EterEconomy]
 # Ce que les succès lisent ou écoutent : quêtes (EterJob), défis et pass (EterReward), monde ressource
 # (EterResource), homes (EterHome), clan (EterClan). Chacun est facultatif.
-softdepend: [EterJob, EterReward, EterResource, EterHome, EterClan]
+softdepend: [EterJob, EterReward, EterResource, EterHome, EterClan, EterHub]
 
 commands:
   achievements:

@@ -34,6 +34,7 @@ dependencies {
     compileOnly("com.github.Eternom:EterResource:1.1.0")
     compileOnly("com.github.Eternom:EterHome:1.3.0")
     compileOnly("com.github.Eternom:EterClan:1.2.0")
+    compileOnly("com.github.Eternom:EterHub:2.14.0")
 }
 
 java {

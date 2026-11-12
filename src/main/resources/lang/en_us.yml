@@ -27,13 +27,14 @@ menu:
   unlocked: "<dark_gray>▸ <info>Tiers unlocked: <accent><count></accent>/<accent><total>"
   category-title: "<primary>Achievements <dark_gray>·</dark_gray> <category>"
   category:
-    progress: "<dark_gray>▸ <info>Tiers: <accent><done></accent>/<accent><total>"
+    progress: "<dark_gray>▸ <info>Tiers: <accent><done></accent>/<accent><total></accent> <dark_gray>(<percent> %)"
     guided: "<accent>Start here!"
     guided-done: "<success>Done"
     open: "<accent>Click <dark_gray>· <info>open"
   step-name: "<accent>Step <step></accent> <dark_gray>· <name>"
   stars: "<accent><stars>"
   progress: "<accent><bar></accent> <info><value>/<target>"
+  almost: "<success>Almost there! Only <accent><left></accent> to go."
   reward: "<dark_gray>▸ <info>Reward: <accent><money></accent>, <accent><points> points"
   hint: "<info>Hint: <accent><hint>"
   complete: "<success>Complete!"
@@ -42,6 +43,7 @@ menu:
   back: "<accent>« Categories"
 
 category:
+  village: "<primary>The village"
   premiers-pas: "<primary>First steps"
   minage: "<primary>Mining"
   terrassement: "<primary>Digging"
@@ -79,6 +81,11 @@ hint:
   pp-pass: "reach tier 3 of the season pass (/pass)."
 
 subject:
+  hub-tour: "Guided tour"
+  hub-discovery: "Village explorer"
+  hub-heads: "Head hunter"
+  hub-fishing: "Lake fisher"
+  hub-harvest: "Village harvests"
   any: "Everything"
   ores: "Ores"
   stone: "Stone"
@@ -109,7 +116,17 @@ subject:
   daily-series: "Loyal"
   homes: "Homeowner"
 
+# Description of one achievement (instead of kind.<kind>)
+description:
+  village-visite: "<info>Finish the guided tour of the village (/tour)"
+  village-decouverte: "<info>Discover every place of the village (/map)"
+  village-tetes: "<info>Find <accent><target></accent> heads hidden in the village"
+  village-peche: "<info>Catch <accent><target></accent> fish in the village lake"
+  village-recoltes: "<info>Harvest <accent><target></accent> crops in the village fields and vineyards"
+
+
 kind:
+  hub: "<info><subject>: <accent><target></accent> times"
   break: "<info><subject>: break <accent><target></accent> (natural)"
   harvest: "<info><subject>: harvest <accent><target></accent> (grown)"
   kill: "<info><subject>: kill <accent><target>"

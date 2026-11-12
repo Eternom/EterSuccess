@@ -1,5 +1,6 @@
 package fr.eternom.eterSuccess.module.achievement;
 
+import fr.eternom.eterHub.api.HubActivityEvent;
 import fr.eternom.eterHome.api.HomeSetEvent;
 import fr.eternom.eterJob.api.JobQuestCompleteEvent;
 import fr.eternom.eterReward.api.ChallengeCompleteEvent;
@@ -61,6 +62,21 @@ public final class NetworkListeners {
         @EventHandler
         public void onHomeSet(HomeSetEvent event) {
             success.refreshStates(event.getPlayer().getUniqueId());
+        }
+    }
+
+    /** Activités du village (EterHub) : tag = l'activité (fishing, head, tour, discovery-complete, harvest...). */
+    public static class Hub implements Listener {
+
+        private final SuccessService success;
+
+        public Hub(SuccessService success) {
+            this.success = success;
+        }
+
+        @EventHandler
+        public void onActivity(HubActivityEvent event) {
+            success.countTag(event.getPlayer(), Kind.HUB, event.getKind());
         }
     }
 

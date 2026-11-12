@@ -52,7 +52,8 @@ class SuccessMenu implements Menu {
                 total += achievement.tiers().length;
             }
             List<Component> lore = new ArrayList<>();
-            lore.add(text("menu.category.progress", "done", String.valueOf(done), "total", String.valueOf(total)));
+            lore.add(text("menu.category.progress", "done", String.valueOf(done), "total", String.valueOf(total),
+                    "percent", String.valueOf(total == 0 ? 0 : done * 100 / total)));
             if (category.guided()) {
                 lore.add(text(done >= total ? "menu.category.guided-done" : "menu.category.guided"));
             }

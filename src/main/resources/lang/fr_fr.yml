@@ -28,13 +28,14 @@ menu:
   unlocked: "<dark_gray>▸ <info>Niveaux débloqués : <accent><count></accent>/<accent><total>"
   category-title: "<primary>Succès <dark_gray>·</dark_gray> <category>"
   category:
-    progress: "<dark_gray>▸ <info>Niveaux : <accent><done></accent>/<accent><total>"
+    progress: "<dark_gray>▸ <info>Niveaux : <accent><done></accent>/<accent><total></accent> <dark_gray>(<percent> %)"
     guided: "<accent>Commence ici !"
     guided-done: "<success>Terminé"
     open: "<accent>Clic <dark_gray>· <info>ouvrir"
   step-name: "<accent>Étape <step></accent> <dark_gray>· <name>"
   stars: "<accent><stars>"
   progress: "<accent><bar></accent> <info><value>/<target>"
+  almost: "<success>Presque ! Plus que <accent><left></accent>."
   reward: "<dark_gray>▸ <info>Récompense : <accent><money></accent>, <accent><points> points"
   hint: "<info>Indice : <accent><hint>"
   complete: "<success>Terminé !"
@@ -43,6 +44,7 @@ menu:
   back: "<accent>« Catégories"
 
 category:
+  village: "<primary>Le village"
   premiers-pas: "<primary>Premiers pas"
   minage: "<primary>Minage"
   terrassement: "<primary>Terrassement"
@@ -82,6 +84,11 @@ hint:
 
 # Noms des succès qui regroupent plusieurs choses
 subject:
+  hub-tour: "Visite guidée"
+  hub-discovery: "Explorateur du village"
+  hub-heads: "Chasseur de têtes"
+  hub-fishing: "Pêcheur du lac"
+  hub-harvest: "Récoltes du village"
   any: "Tout"
   ores: "Minerais"
   stone: "Pierre"
@@ -113,7 +120,17 @@ subject:
   homes: "Propriétaire"
 
 # Description d'un niveau selon ce qu'il compte (<target> = le nombre, <subject> = le nom)
+# Description propre à un succès (à la place de kind.<kind>)
+description:
+  village-visite: "<info>Finir la visite guidée du village (/tour)"
+  village-decouverte: "<info>Découvrir tous les lieux du village (/map)"
+  village-tetes: "<info>Trouver <accent><target></accent> têtes cachées au village"
+  village-peche: "<info>Pêcher <accent><target></accent> poissons au lac du village"
+  village-recoltes: "<info>Récolter <accent><target></accent> cultures dans les champs et vignes du village"
+
+
 kind:
+  hub: "<info><subject> : <accent><target></accent> fois"
   break: "<info><subject> : en casser <accent><target></accent> (naturels)"
   harvest: "<info><subject> : en récolter <accent><target></accent> (mûrs)"
   kill: "<info><subject> : en tuer <accent><target>"

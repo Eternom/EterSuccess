@@ -54,6 +54,7 @@ public final class AchievementCatalog {
         }
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
         Logger logger = plugin.getLogger();
+        mergeNewCategories(plugin, yaml, logger);
 
         Map<String, List<Achievement>> byCategory = new LinkedHashMap<>();
         ConfigurationSection categories = yaml.getConfigurationSection("categories");
@@ -86,6 +87,51 @@ public final class AchievementCatalog {
                     categories.getBoolean(id + ".guided"), List.copyOf(list)));
         });
         return List.copyOf(result);
+    }
+
+    /**
+     * Une catégorie ajoutée dans une nouvelle version (absente du fichier du serveur) arrive avec ses succès, en mémoire
+     * seulement : le fichier n'est pas réécrit. Les catégories déjà là restent telles que le serveur les a réglées.
+     */
+    private static void mergeNewCategories(JavaPlugin plugin, YamlConfiguration yaml, Logger logger) {
+        java.io.InputStream stream = plugin.getResource("achievements.yml");
+        if (stream == null) {
+            return;
+        }
+        YamlConfiguration bundled = YamlConfiguration.loadConfiguration(
+                new java.io.InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8));
+        ConfigurationSection categories = bundled.getConfigurationSection("categories");
+        if (categories == null) {
+            return;
+        }
+        for (String category : categories.getKeys(false)) {
+            if (yaml.isSet("categories." + category)) {
+                continue;
+            }
+            copy(categories.getConfigurationSection(category), yaml, "categories." + category);
+            ConfigurationSection achievements = bundled.getConfigurationSection("achievements");
+            if (achievements != null) {
+                for (String id : achievements.getKeys(false)) {
+                    if (category.equals(achievements.getString(id + ".category")) && !yaml.isSet("achievements." + id)) {
+                        copy(achievements.getConfigurationSection(id), yaml, "achievements." + id);
+                    }
+                }
+            }
+            logger.info("achievements.yml : nouvelle catégorie " + category + " ajoutée (version du plugin)");
+        }
+    }
+
+    /** Recopie une section (valeurs, pas les sous-sections elles-mêmes) sous path. */
+    private static void copy(ConfigurationSection from, YamlConfiguration to, String path) {
+        if (from == null) {
+            return;
+        }
+        to.createSection(path);
+        from.getValues(true).forEach((key, value) -> {
+            if (!(value instanceof ConfigurationSection)) {
+                to.set(path + "." + key, value);
+            }
+        });
     }
 
     private static Achievement achievement(String id, ConfigurationSection section, List<Reward> tierRewards, Logger logger) {
